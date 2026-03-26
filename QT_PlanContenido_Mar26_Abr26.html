@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plan Contenido Mar 26 – Abr 26 · Quinta Tabachín</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde: #1e3220;
+  --verde-m: #2d4a2d;
+  --verde-l: #537056;
+  --dorado: #c9a84c;
+  --dorado-l: #e2c97e;
+  --crema: #f5f0e8;
+  --arena: #becbbf;
+  --terracota: #b36b4b;
+  --texto: #1a2e1a;
+  --gris: #8a9e8a;
+  --blanco: #ffffff;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Jost',sans-serif; background:var(--crema); color:var(--texto); font-size:13px; }
+
+/* HEADER */
+.header { background:var(--verde); padding:48px 52px 40px; position:relative; overflow:hidden; }
+.header::before { content:''; position:absolute; top:-100px; right:-80px; width:360px; height:360px; border:1px solid rgba(201,168,76,.12); border-radius:50%; }
+.header::after { content:''; position:absolute; bottom:-60px; left:38%; width:180px; height:180px; border:1px solid rgba(201,168,76,.07); border-radius:50%; }
+.eyebrow { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--dorado); margin-bottom:12px; }
+.header h1 { font-family:'Cormorant Garamond',serif; color:var(--crema); font-size:48px; font-weight:300; line-height:1.05; }
+.header h1 em { color:var(--dorado); font-style:italic; }
+.header-meta { margin-top:22px; display:flex; gap:36px; flex-wrap:wrap; }
+.hm { font-size:11px; color:var(--arena); font-weight:300; }
+.hm strong { color:var(--crema); font-weight:500; }
+
+/* METRICAS FEBRERO */
+.metricas { display:grid; grid-template-columns:repeat(6,1fr); background:var(--verde-m); }
+.met { padding:18px 14px; text-align:center; border-right:1px solid rgba(255,255,255,.08); }
+.met:last-child { border:none; }
+.mn { font-family:'Cormorant Garamond',serif; font-size:28px; color:var(--dorado); font-weight:300; display:block; }
+.ml { font-size:9px; color:var(--arena); letter-spacing:2px; text-transform:uppercase; margin-top:3px; display:block; line-height:1.4; }
+
+/* PRIORIDADES */
+.prioridades { padding:32px 52px; display:grid; grid-template-columns:repeat(3,1fr); gap:16px; }
+.pri { background:var(--blanco); border:1px solid #dde8dd; padding:18px 20px; border-top:3px solid var(--dorado); }
+.pri-n { font-family:'Cormorant Garamond',serif; font-size:48px; color:rgba(201,168,76,.2); font-weight:300; line-height:1; }
+.pri-tipo { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-top:-10px; }
+.pri-desc { font-size:11px; color:var(--gris); margin-top:6px; line-height:1.6; font-weight:300; }
+
+/* SEMANA HEADER */
+.semana-wrap { padding:0 52px; margin-bottom:48px; }
+.sem-header { display:flex; align-items:baseline; gap:16px; padding-bottom:14px; margin-bottom:20px; border-bottom:1px solid var(--arena); }
+.sem-n { font-family:'Cormorant Garamond',serif; font-size:60px; color:var(--arena); font-weight:300; line-height:1; }
+.sem-info h2 { font-family:'Cormorant Garamond',serif; font-size:26px; font-weight:600; color:var(--verde-m); }
+.sem-obj { font-size:11px; color:var(--verde-l); margin-top:3px; font-weight:300; }
+.sem-badge { margin-left:auto; font-size:9px; letter-spacing:2px; text-transform:uppercase; padding:6px 14px; font-weight:600; white-space:nowrap; }
+.b-aloj { background:var(--verde-m); color:var(--crema); }
+.b-evento { background:var(--terracota); color:var(--blanco); }
+.b-day { background:#929a77; color:var(--blanco); }
+.b-ss { background:var(--dorado); color:var(--verde); }
+.b-doc { background:#929a77; color:var(--blanco); }
+
+/* DÍAS GRID */
+.dias-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; margin-bottom:16px; }
+.dia { background:var(--blanco); border:1px solid #e0e8e0; border-radius:2px; overflow:hidden; min-height:180px; }
+.dia.ocupado { background:#f8f5f2; border-color:#d0c8c0; }
+.dia.ss { background:#fdf8f0; border-color:#e0c870; }
+.dia.libre { background:#f0f8f0; border-color:#a0c8a0; }
+.dia.venta { background:#fefaf0; border-color:#e0d090; }
+.dia.off { background:#f5f5f5; border-color:#e0e0e0; opacity:.6; }
+.dia-top { padding:7px 9px 5px; border-bottom:1px solid rgba(0,0,0,.06); }
+.dia-nombre { font-size:8px; letter-spacing:1.5px; text-transform:uppercase; color:var(--gris); }
+.dia-num { font-family:'Cormorant Garamond',serif; font-size:26px; color:var(--texto); font-weight:300; line-height:1; }
+.dia.libre .dia-num { color:var(--verde-l); }
+.dia.ss .dia-num { color:#9a7a1a; }
+.dia-body { padding:7px 9px; }
+.dia-tipo { font-size:8px; letter-spacing:1.5px; text-transform:uppercase; font-weight:500; margin-bottom:4px; }
+.t-aloj { color:var(--verde-m); }
+.t-evento { color:var(--terracota); }
+.t-day { color:#929a77; }
+.t-story { color:#3a4a7a; }
+.t-reel { color:var(--dorado); }
+.t-post { color:#6a5a3a; }
+.t-ss { color:#9a7a1a; }
+.t-doc { color:var(--gris); }
+.dia-contenido { font-size:10px; color:var(--texto); line-height:1.5; font-weight:400; }
+.dia-stories { font-size:9px; color:#3a4a7a; margin-top:5px; line-height:1.5; border-top:1px solid rgba(58,74,122,.1); padding-top:5px; }
+.dia-nota { font-size:9px; color:var(--gris); margin-top:4px; font-style:italic; }
+
+/* COPY CARDS */
+.copies-wrap { padding:0 52px; margin-bottom:48px; }
+.copy-card { border:1px solid var(--arena); margin-bottom:20px; }
+.copy-head { background:var(--verde-m); padding:12px 22px; display:flex; align-items:center; gap:14px; }
+.ch-sem { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--arena); }
+.ch-titulo { font-family:'Cormorant Garamond',serif; font-size:18px; color:var(--crema); font-weight:400; }
+.ch-badge { margin-left:auto; font-size:9px; padding:3px 10px; letter-spacing:1px; text-transform:uppercase; font-weight:500; white-space:nowrap; }
+.cb-r { background:rgba(201,168,76,.25); color:var(--dorado-l); }
+.cb-p { background:rgba(255,255,255,.1); color:var(--arena); }
+.cb-s { background:rgba(122,144,224,.3); color:#a0b4f0; }
+.cb-a { background:rgba(224,160,122,.3); color:#e0a07a; }
+.copy-anat { background:#fafaf7; padding:10px 22px; display:flex; flex-wrap:wrap; gap:0; border-bottom:1px solid #eaeee8; }
+.an { flex:1; min-width:120px; padding:7px 12px; }
+.an:not(:last-child) { border-right:1px solid #eaeee8; }
+.an-l { font-size:8px; letter-spacing:2px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:3px; }
+.an-t { font-size:10px; color:#5a705a; font-weight:300; line-height:1.4; font-style:italic; }
+.copy-body { background:var(--blanco); padding:20px 22px; font-size:12px; line-height:2; color:var(--texto); font-weight:300; white-space:pre-line; }
+.hook { color:var(--verde-m); font-weight:500; }
+.cuerpo { color:var(--texto); }
+.cierre { color:var(--verde-l); }
+.cta { color:#7a5c2a; font-weight:400; }
+.copy-nota { background:#fdf8f0; padding:10px 22px; font-size:10px; color:#7a5c2a; font-weight:300; line-height:1.6; border-top:1px solid #e8d090; }
+
+/* ADS */
+.ads-wrap { padding:0 52px; margin-bottom:48px; }
+.ad { background:var(--verde-m); padding:22px 28px; margin-bottom:10px; display:grid; grid-template-columns:50px 1fr 100px; gap:20px; align-items:start; }
+.ad-n { font-family:'Cormorant Garamond',serif; font-size:44px; color:var(--dorado); font-weight:300; opacity:.4; line-height:1; }
+.ad-nombre { font-family:'Cormorant Garamond',serif; font-size:19px; color:var(--dorado); margin-bottom:4px; }
+.ad-fechas { font-size:9px; color:var(--arena); letter-spacing:1px; margin-bottom:8px; }
+.ad-det { font-size:11px; color:var(--arena); line-height:1.9; font-weight:300; }
+.ad-det strong { color:var(--crema); font-weight:500; }
+.ad-bud { text-align:right; }
+.ab-n { font-family:'Cormorant Garamond',serif; font-size:24px; color:var(--dorado); font-weight:300; display:block; }
+.ab-l { font-size:9px; color:var(--arena); letter-spacing:1px; text-transform:uppercase; }
+
+/* KPIS */
+.kpis { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; margin-top:16px; }
+.kpi { background:var(--verde-m); padding:20px 14px; text-align:center; }
+.kn { font-family:'Cormorant Garamond',serif; font-size:28px; color:var(--dorado); font-weight:300; display:block; }
+.kl { font-size:9px; color:var(--arena); letter-spacing:1.5px; text-transform:uppercase; margin-top:5px; display:block; line-height:1.5; }
+
+/* SECCION LABEL */
+.sec-l { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:18px; display:block; }
+.divider { height:1px; background:var(--arena); margin:0 52px 40px; }
+.seccion { padding:36px 52px; }
+.seccion + .seccion { padding-top:0; }
+
+/* NOTA HORARIOS */
+.horarios { background:var(--blanco); border-left:4px solid var(--dorado); padding:16px 22px; margin-bottom:20px; display:flex; gap:32px; align-items:center; flex-wrap:wrap; }
+.h-item { text-align:center; }
+.h-dia { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gris); margin-bottom:3px; }
+.h-hora { font-size:14px; font-weight:500; color:var(--verde-m); }
+.h-sep { color:var(--arena); font-size:20px; }
+
+/* LEYENDA */
+.leyenda { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
+.ley { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--gris); }
+.ley-dot { width:10px; height:10px; border-radius:2px; flex-shrink:0; }
+.ld-libre { background:#a0c8a0; }
+.ld-ss { background:#e0c870; }
+.ld-venta { background:#e8d090; }
+.ld-ocu { background:#d0c8c0; }
+.ld-off { background:#d0d0d0; }
+
+/* FOOTER */
+.footer { background:var(--texto); padding:22px 52px; display:flex; justify-content:space-between; align-items:center; }
+.footer-m { font-family:'Cormorant Garamond',serif; color:var(--dorado); font-size:15px; font-style:italic; }
+.footer-i { font-size:10px; color:var(--gris); letter-spacing:1px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="eyebrow">Quinta Tabachín · Plan Estratégico · @TabachinQuinta · Mar 26 – Abr 26</div>
+  <h1>Contenido <em>Marzo · Abril</em><br>2026</h1>
+  <div class="header-meta">
+    <div class="hm"><strong>Prioridad:</strong> Alojamiento · Eventos · DayPass</div>
+    <div class="hm"><strong>Venta:</strong> mínimo 3 días antes · nunca el mismo día</div>
+    <div class="hm"><strong>Mejores horarios IG:</strong> Lun 6–9pm · Mié 3–6pm · Dom 6–9pm</div>
+    <div class="hm"><strong>Ads:</strong> ~$4,000 MXN · 4 campañas</div>
+  </div>
+</div>
+
+<!-- MÉTRICAS FEBRERO -->
+<div class="metricas">
+  <div class="met"><span class="mn">10k</span><span class="ml">Visualizaciones feb</span></div>
+  <div class="met"><span class="mn">37%</span><span class="ml">No seguidores</span></div>
+  <div class="met"><span class="mn">1,700</span><span class="ml">Seguidores totales</span></div>
+  <div class="met"><span class="mn">+49</span><span class="ml">Nuevos vs enero</span></div>
+  <div class="met"><span class="mn">7+11</span><span class="ml">Reels + publicaciones</span></div>
+  <div class="met"><span class="mn">979</span><span class="ml">Views post top</span></div>
+</div>
+
+<!-- PRIORIDADES -->
+<div class="prioridades">
+  <div class="pri">
+    <div class="pri-n">01</div>
+    <div class="pri-tipo">Alojamiento · Prioridad máxima</div>
+    <div class="pri-desc">Ticket más alto · genera lealtad · UGC más rico · el carrusel de 5 slides ya está listo para publicar. Empujar fin de semana principalmente.</div>
+  </div>
+  <div class="pri">
+    <div class="pri-n">02</div>
+    <div class="pri-tipo">Eventos · Segunda prioridad</div>
+    <div class="pri-desc">Fechas de semanas disponibles + mayo en puerta. Cumpleaños, reuniones corporativas, fiestas privadas. Mover post-Semana Santa cuando la gente empieza a planear mayo.</div>
+  </div>
+  <div class="pri">
+    <div class="pri-n">03</div>
+    <div class="pri-tipo">DayPass · Tercera prioridad</div>
+    <div class="pri-desc">Entre semana principalmente. Ticket menor pero más fácil de convertir. Usar para llenar días sin reserva y demostrar el espacio a futuros clientes de alojamiento.</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- HORARIOS ÓPTIMOS -->
+<div class="seccion" style="padding-top:0">
+  <span class="sec-l">▸ Horarios óptimos para publicar · datos IG febrero</span>
+  <div class="horarios">
+    <div class="h-item"><div class="h-dia">Lunes</div><div class="h-hora">6 – 9 pm</div></div>
+    <div class="h-sep">·</div>
+    <div class="h-item"><div class="h-dia">Miércoles</div><div class="h-hora">3 – 6 pm</div></div>
+    <div class="h-sep">·</div>
+    <div class="h-item"><div class="h-dia">Domingo</div><div class="h-hora">6 – 9 pm</div></div>
+    <div style="flex:1; font-size:11px; color:var(--gris); font-weight:300; line-height:1.7;">
+      Publicar <strong style="color:var(--verde-m)">carrusel de hoy (Mar 26) a las 7pm</strong> — coincide exactamente con el pico del miércoles (3–6pm ya pasó, pero 6–9pm del jueves también aplica). El domingo publicar a las 6pm en punto.
+    </div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ══════════════════════
+     SEMANA 0 · 26-27 MAR
+══════════════════════ -->
+<div style="padding:0 52px 8px"><span class="sec-l">▸ Calendario semana a semana · contenido completo</span></div>
+
+<div class="semana-wrap">
+  <div class="sem-header">
+    <div class="sem-n">00</div>
+    <div class="sem-info">
+      <h2>26 – 27 marzo</h2>
+      <div class="sem-obj">Arranque inmediato · Carrusel alojamiento hoy · 1 día disponible (Sáb 27 si no está ocupado)</div>
+    </div>
+    <div class="sem-badge b-aloj">Alojamiento #1</div>
+  </div>
+  <div class="dias-grid">
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Jue</div><div class="dia-num">26</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-reel">Post principal</div>
+        <div class="dia-contenido">Carrusel alojamiento 5 slides<br>"Imagina tener todo esto…"<br>→ 7pm exacto</div>
+        <div class="dia-stories">① Compartir carrusel<br>② Emoji slider: "¿Qué tanto necesitas escaparte?"<br>③ Poll: "¿Con quién vendrías?" pareja/familia/amigos</div>
+      </div>
+    </div>
+    <div class="dia venta">
+      <div class="dia-top"><div class="dia-nombre">Vie</div><div class="dia-num">27</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-story">Stories · venta suave</div>
+        <div class="dia-contenido">No hay post nuevo.<br>Solo stories activas.</div>
+        <div class="dia-stories">① "Este fin aún disponible" + CTA WA<br>② Clip de espacio preparado<br>③ FAQ: "¿Cuántas personas caben?"</div>
+      </div>
+    </div>
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Sáb</div><div class="dia-num">28</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-ss">Inicio SS · Doc</div>
+        <div class="dia-contenido">Si hay reserva: documentar.<br>Clips de espacio, agua, ambiente.<br>Sin mostrar clientes.</div>
+        <div class="dia-stories">① Ambiente del día<br>② Reposteo UGC inmediato si llega</div>
+      </div>
+    </div>
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Dom</div><div class="dia-num">29</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-ss">Semana Santa · Ocupado</div>
+        <div class="dia-contenido">Solo documentar.<br>No vender fechas SS.</div>
+        <div class="dia-stories">① Clip ambiente<br>② "Semana Santa 🌿 Abril ya disponible"</div>
+      </div>
+    </div>
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Lun</div><div class="dia-num">30</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-ss">Semana Santa</div>
+        <div class="dia-contenido">Documentación pura.<br>No publicar nada nuevo.</div>
+        <div class="dia-stories">① Reposteo UGC si hay<br>② Poll comunidad</div>
+      </div>
+    </div>
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Mar</div><div class="dia-num">31</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-ss">Semana Santa</div>
+        <div class="dia-contenido">Documentación pura.</div>
+        <div class="dia-stories">① Encuesta engagement<br>② Clip jardín/naturaleza</div>
+      </div>
+    </div>
+    <div class="dia off">
+      <div class="dia-top"><div class="dia-nombre">Mié</div><div class="dia-num">—</div></div>
+      <div class="dia-body"><div class="dia-nota">1 abril →<br>siguiente semana</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- SEMANA 1 · 1-5 ABR -->
+<div class="semana-wrap">
+  <div class="sem-header">
+    <div class="sem-n">01</div>
+    <div class="sem-info">
+      <h2>1 – 5 abril · Semana Santa</h2>
+      <div class="sem-obj">Documentar SS + activar preventa Pascua (6,7,8 abr) desde el 3 · publicar 2 posts con UGC o material de SS</div>
+    </div>
+    <div class="sem-badge b-ss">Semana Santa + Preventa</div>
+  </div>
+  <div class="dias-grid">
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Mié</div><div class="dia-num">1</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-ss">SS · Doc</div>
+        <div class="dia-contenido">Documentar sin publicar.</div>
+        <div class="dia-stories">① Clip alberca luz de tarde<br>② Reposteo UGC inmediato</div>
+      </div>
+    </div>
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Jue</div><div class="dia-num">2</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-post">Post · SS aspiracional</div>
+        <div class="dia-contenido">Foto/reel de SS capturado.<br>"Así se vive la Semana Santa<br>en Tabachín."</div>
+        <div class="dia-stories">① Compartir post<br>② Reposteo UGC</div>
+      </div>
+    </div>
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Vie</div><div class="dia-num">3</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-aloj">Post + Venta · Pascua</div>
+        <div class="dia-contenido">Reel still o foto pro.<br>Activar venta Pascua<br>(6, 7, 8 abr) — 3 días antes.</div>
+        <div class="dia-stories">① "Pascua del 6 al 8 disponible"<br>② CTA directo WA<br>③ Poll: "¿Ya tienes plan de Pascua?"</div>
+      </div>
+    </div>
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Sáb</div><div class="dia-num">4</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-ss">SS · Doc</div>
+        <div class="dia-contenido">Documentar. Repostear UGC.</div>
+        <div class="dia-stories">① Ambiente del día<br>② Reposteo UGC<br>③ "Pascua en 2 días · queda lugar"</div>
+      </div>
+    </div>
+    <div class="dia ss">
+      <div class="dia-top"><div class="dia-nombre">Dom</div><div class="dia-num">5</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-post">Post · UGC SS</div>
+        <div class="dia-contenido">Mejor material de SS.<br>Copy: "Así fue la semana<br>que no querían que acabara."</div>
+        <div class="dia-stories">① Compartir post<br>② "Mañana Pascua disponible" CTA WA</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Lun</div><div class="dia-num">6</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-aloj">LIBRE · Pascua</div>
+        <div class="dia-contenido">Disponible para reserva.<br>Documentar si hay visita.</div>
+        <div class="dia-stories">① Clip ambiente<br>② Reposteo UGC si hay</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Mar</div><div class="dia-num">7</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-aloj">LIBRE · Lunes SS</div>
+        <div class="dia-contenido">Disponible para reserva.</div>
+        <div class="dia-stories">① Clip mañana en la quinta<br>② Encuesta engagement</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEMANA 2 · 8-14 ABR -->
+<div class="semana-wrap">
+  <div class="sem-header">
+    <div class="sem-n">02</div>
+    <div class="sem-info">
+      <h2>8 – 14 abril</h2>
+      <div class="sem-obj">Post-SS · Activar eventos mayo · Dom 9 libre · entre semana DayPass · fin de semana alojamiento</div>
+    </div>
+    <div class="sem-badge b-evento">Eventos + Alojamiento</div>
+  </div>
+  <div class="dias-grid">
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Mié</div><div class="dia-num">8</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-evento">Post · Eventos</div>
+        <div class="dia-contenido">Primer post de eventos.<br>"Tu reunión merece<br>un espacio así."<br>→ 6pm</div>
+        <div class="dia-stories">① Compartir post<br>② "Espacio disponible esta semana" DayPass<br>③ Emoji slider</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Jue</div><div class="dia-num">9</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-aloj">LIBRE · Dom 9</div>
+        <div class="dia-contenido">Reel pro · Alojamiento.<br>Usar material nuevo de SS.<br>→ 7pm</div>
+        <div class="dia-stories">① Compartir reel<br>② "Este fin disponible" CTA WA<br>③ Poll: "¿Fin de semana en QT?"</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Vie</div><div class="dia-num">10</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-day">Post · DayPass</div>
+        <div class="dia-contenido">Carrusel DayPass evergreen.<br>"¿Qué incluye el DayPass?"<br>Entre semana disponible.</div>
+        <div class="dia-stories">① Compartir post<br>② "Lunes al viernes disponible" CTA WA<br>③ FAQ dinámica</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Sáb</div><div class="dia-num">11</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-story">Stories activas</div>
+        <div class="dia-contenido">No hay post nuevo.<br>Engagement puro.</div>
+        <div class="dia-stories">① Caja preguntas: "¿Qué harías primero al llegar?"<br>② Clip ambiente<br>③ Reposteo UGC</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Dom</div><div class="dia-num">12</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-post">Post · Atmosférico</div>
+        <div class="dia-contenido">Foto pro de jardín o alberca.<br>Copy poético corto.<br>→ 6pm (pico domingo)</div>
+        <div class="dia-stories">① Compartir post<br>② Encuesta: "¿Con quién vendrías?"<br>③ Clip cierre del día</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Lun</div><div class="dia-num">13</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-evento">Post · Eventos mayo</div>
+        <div class="dia-contenido">Reel still · espacio salón/jardín.<br>"Mayo está disponible.<br>Tu evento también puede ser aquí."<br>→ 6pm (pico lunes)</div>
+        <div class="dia-stories">① Compartir reel<br>② "Eventos en mayo · fechas abiertas" CTA WA<br>③ Detrás de escena salón</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Mar</div><div class="dia-num">14</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-story">Stories engagement</div>
+        <div class="dia-contenido">Sin post nuevo.<br>Responder preguntas del caja.</div>
+        <div class="dia-stories">① Respuestas FAQs de la caja<br>② Clip entre semana tranquilo<br>③ Emoji slider</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEMANA 3 · 15-21 ABR -->
+<div class="semana-wrap">
+  <div class="sem-header">
+    <div class="sem-n">03</div>
+    <div class="sem-info">
+      <h2>15 – 21 abril</h2>
+      <div class="sem-obj">Prueba social + UGC SS · Push eventos mayo · DayPass entre semana · Alojamiento fin de semana</div>
+    </div>
+    <div class="sem-badge b-aloj">Alojamiento + Prueba social</div>
+  </div>
+  <div class="dias-grid">
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Mié</div><div class="dia-num">15</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-post">Post · Reseña real</div>
+        <div class="dia-contenido">Captura comentario positivo<br>+ foto del espacio mencionado.<br>Prueba social alojamiento.<br>→ 3–6pm (pico miércoles)</div>
+        <div class="dia-stories">① Compartir post<br>② DayPass entre semana disponible<br>③ FAQ: "¿Se puede llevar música?"</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Jue</div><div class="dia-num">16</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-reel">Reel pro · Noche en QT</div>
+        <div class="dia-contenido">Clips nocturnos: fogatero,<br>luces, jacuzzi bajo el cielo.<br>"Hay noches que merecen<br>más que una cama de hotel."</div>
+        <div class="dia-stories">① Compartir reel<br>② "Fin de semana 19-20 disponible" → 3 días antes<br>③ Detrás del reel</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Vie</div><div class="dia-num">17</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-story">Stories venta fin de semana</div>
+        <div class="dia-contenido">Sin post nuevo.</div>
+        <div class="dia-stories">① "Este fin 19-20 disponible · escríbenos hoy"<br>② CTA WA directo<br>③ Poll: "¿Sáb o Dom?"</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Sáb</div><div class="dia-num">18</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-post">Post · Eventos corporativos</div>
+        <div class="dia-contenido">Carrusel: "Tu equipo también<br>necesita desconectarse."<br>Enfocado en reuniones<br>y retiros corporativos.</div>
+        <div class="dia-stories">① Compartir post<br>② Emoji slider: "¿Tu equipo necesita un retiro?"<br>③ Clip salón/jardín</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Dom</div><div class="dia-num">19</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-aloj">Disponible · documenta</div>
+        <div class="dia-contenido">Si hay reserva: doc y UGC.<br>Si no: reel still jardín.<br>→ publicar 6pm</div>
+        <div class="dia-stories">① UGC si hay o clip propio<br>② Encuesta engagement</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Lun</div><div class="dia-num">20</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-reel">Reel still · Mañana en QT</div>
+        <div class="dia-contenido">"Te despiertas. Abres el balcón.<br>El jardín ya te está esperando."<br>→ 6–9pm (pico lunes)</div>
+        <div class="dia-stories">① Compartir reel<br>② Caja preguntas: "¿Qué harías primero al llegar?"<br>③ DayPass entre semana CTA</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Mar</div><div class="dia-num">21</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-day">Post · DayPass</div>
+        <div class="dia-contenido">Foto alberca entre semana.<br>"Martes en la alberca.<br>¿Por qué esperar al fin<br>de semana?"</div>
+        <div class="dia-stories">① Compartir post<br>② DayPass disponible esta semana CTA WA<br>③ Responder preguntas de la caja</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- SEMANA 4 · 22-26 ABR -->
+<div class="semana-wrap">
+  <div class="sem-header">
+    <div class="sem-n">04</div>
+    <div class="sem-info">
+      <h2>22 – 26 abril</h2>
+      <div class="sem-obj">Día del Niño (30 abr en puerta) · Push Alojamiento fin de semana · Preventa mayo · Cierre del mes</div>
+    </div>
+    <div class="sem-badge b-aloj">Alojamiento + Preventa mayo</div>
+  </div>
+  <div class="dias-grid">
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Mié</div><div class="dia-num">22</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-post">Post · Día del Niño preview</div>
+        <div class="dia-contenido">Carrusel familias.<br>"El Día del Niño que sí<br>van a recordar."<br>→ 3–6pm (pico miércoles)</div>
+        <div class="dia-stories">① Compartir post<br>② "30 abril Día del Niño · hay lugar" CTA WA<br>③ Poll: "¿Cuántos niños vendrían?"</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Jue</div><div class="dia-num">23</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-reel">Reel pro · Espacio completo</div>
+        <div class="dia-contenido">Recorrido visual de la quinta.<br>Todas las áreas en un reel.<br>"Todo esto. Una sola reserva.<br>Un solo grupo."</div>
+        <div class="dia-stories">① Compartir reel<br>② "Este fin 25-26 disponible" · venta 3 días antes<br>③ Detrás de cámara</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Vie</div><div class="dia-num">24</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-story">Stories venta fin de semana</div>
+        <div class="dia-contenido">Sin post nuevo.</div>
+        <div class="dia-stories">① "Sáb 25 y Dom 26 disponibles" CTA WA<br>② Clip espacio preparado<br>③ FAQ: "¿Cuánto tiempo antes hay que reservar?"</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Sáb</div><div class="dia-num">25</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-aloj">Disponible · Documenta</div>
+        <div class="dia-contenido">Si hay reserva: capturar.<br>Si no: content day propio.</div>
+        <div class="dia-stories">① UGC o clip propio<br>② Reposteo inmediato si hay cliente</div>
+      </div>
+    </div>
+    <div class="dia libre">
+      <div class="dia-top"><div class="dia-nombre">Dom</div><div class="dia-num">26</div></div>
+      <div class="dia-body">
+        <div class="dia-tipo t-post">Post cierre de mes</div>
+        <div class="dia-contenido">Foto atmosférica.<br>Copy: "Abril fue así.<br>Mayo también puede serlo."<br>→ 6pm (pico domingo)</div>
+        <div class="dia-stories">① Compartir post<br>② "Mayo disponible · aparta tu fecha" CTA WA<br>③ Poll: "¿Cuándo vienes en mayo?"</div>
+      </div>
+    </div>
+    <div class="dia off"><div class="dia-top"><div class="dia-nombre">—</div><div class="dia-num">—</div></div><div class="dia-body"><div class="dia-nota">Continúa<br>en mayo</div></div></div>
+    <div class="dia off"><div class="dia-top"><div class="dia-nombre">—</div><div class="dia-num">—</div></div><div class="dia-body"></div></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- COPIES COMPLETOS -->
+<div class="copies-wrap">
+  <span class="sec-l">▸ Copies completos · piezas clave del período</span>
+
+  <!-- COPY 1: Carrusel alojamiento (HOY) -->
+  <div class="copy-card">
+    <div class="copy-head">
+      <div><div class="ch-sem">Hoy · Jue 26 mar · 7pm</div><div class="ch-titulo">Caption carrusel alojamiento 5 slides</div></div>
+      <span class="ch-badge cb-p">Post principal</span>
+    </div>
+    <div class="copy-anat">
+      <div class="an"><div class="an-l">Hook</div><div class="an-t">Pregunta que activa el deseo</div></div>
+      <div class="an"><div class="an-l">Cuerpo</div><div class="an-t">El diferenciador de QT en una frase clara</div></div>
+      <div class="an"><div class="an-l">Amenidades</div><div class="an-t">Lista en contexto emocional, no seca</div></div>
+      <div class="an"><div class="an-l">CTA</div><div class="an-t">WA directo + link hub</div></div>
+    </div>
+    <div class="copy-body"><span class="hook">¿Cuándo fue la última vez que tu grupo tuvo un espacio completamente para ustedes?</span>
+
+<span class="cuerpo">Sin extraños. Sin compartir la alberca. Sin toparse con nadie en el pasillo.
+
+En Tabachín reservamos un solo grupo por día. La casa entera — alberca climatizada, habitaciones, jacuzzi, billar, fogatero, cocina exterior — es tuya desde que llegas hasta que te vas.
+
+Así se ve una noche que sí vale la pena.</span>
+
+<span class="cierre">📍 Salamanca, Gto. · Desde $3,999 MXN / noche · Hasta 15 personas</span>
+
+<span class="cta">Consulta tu fecha:
+📲 wa.me/4641704249
+🔗 atom.bio/quinta-tabachin
+
+#QuintaTabachin #Alojamiento #CasaDeCampo #Salamanca #AlbercaPrivada #EscapateLocal #Guanajuato #HospedajeExclusivo</span></div>
+  </div>
+
+  <!-- COPY 2: SS aspiracional (Jue 2 abr) -->
+  <div class="copy-card">
+    <div class="copy-head">
+      <div><div class="ch-sem">Jue 2 abril · Post SS con material capturado</div><div class="ch-titulo">Post SS aspiracional · alojamiento</div></div>
+      <span class="ch-badge cb-r">Post / Reel</span>
+    </div>
+    <div class="copy-anat">
+      <div class="an"><div class="an-l">Hook</div><div class="an-t">Situación que el cliente reconoce</div></div>
+      <div class="an"><div class="an-l">Cuerpo</div><div class="an-t">Sensorial · lo que vivieron los clientes de SS</div></div>
+      <div class="an"><div class="an-l">Cierre</div><div class="an-t">Apertura hacia Pascua y fechas próximas</div></div>
+    </div>
+    <div class="copy-body"><span class="hook">Algunos grupos llegaron el jueves. Se fueron el lunes. Y no quisieron salir en ningún momento.</span>
+
+<span class="cuerpo">Eso es lo que pasa cuando el espacio es completamente tuyo.
+Sin itinerario. Sin hotel. Sin desconocidos al lado.
+Solo tu gente, la alberca y el tiempo que quieran quedarse.</span>
+
+<span class="cierre">Semana Santa se fue — pero Pascua y abril siguen disponibles.
+
+📍 Una sola reserva al día. El espacio es solo tuyo.
+📲 wa.me/4641704249
+🔗 atom.bio/quinta-tabachin
+
+#QuintaTabachin #SemanaSanta #Alojamiento #Salamanca #CasaDeCampo #Guanajuato</span></div>
+    <div class="copy-nota">💡 Usa la mejor foto o clip capturado durante SS. Si hay UGC de clientes con permiso, aún mejor — es la prueba social más poderosa.</div>
+  </div>
+
+  <!-- COPY 3: Eventos (Mié 8 abr) -->
+  <div class="copy-card">
+    <div class="copy-head">
+      <div><div class="ch-sem">Mié 8 abril · Primer post de eventos</div><div class="ch-titulo">Post eventos · reuniones y celebraciones</div></div>
+      <span class="ch-badge cb-p">Post</span>
+    </div>
+    <div class="copy-anat">
+      <div class="an"><div class="an-l">Hook</div><div class="an-t">Contraste con lo que normalmente hacen</div></div>
+      <div class="an"><div class="an-l">Cuerpo</div><div class="an-t">El espacio como protagonista del evento</div></div>
+      <div class="an"><div class="an-l">Tipos</div><div class="an-t">Nombrar ocasiones sin ser exhaustivos</div></div>
+    </div>
+    <div class="copy-body"><span class="hook">Tu reunión merece un espacio así.</span>
+
+<span class="cuerpo">Nada de salones de hotel con olor a moqueta.
+Nada de restaurantes donde tienen que hablar en voz baja.
+
+En Tabachín tu evento tiene jardines, alberca, cocina exterior, salón privado y todo el espacio para que la gente se relaje de verdad — y eso cambia cómo se sienten las conversaciones.</span>
+
+<span class="cierre">Cumpleaños · Reuniones de equipo · Cenas privadas · Celebraciones familiares
+
+Desde 30 personas. Mayo disponible.
+
+📍 Una sola reserva al día. El espacio es completamente tuyo.
+📲 wa.me/4641704249
+🔗 atom.bio/quinta-tabachin
+
+#QuintaTabachin #Eventos #SalonDeEventos #Salamanca #EventosPrivados #Guanajuato</span></div>
+  </div>
+
+  <!-- COPY 4: DayPass entre semana (Vie 10 abr) -->
+  <div class="copy-card">
+    <div class="copy-head">
+      <div><div class="ch-sem">Vie 10 abril · DayPass evergreen</div><div class="ch-titulo">Post DayPass · ¿qué incluye? · carrusel</div></div>
+      <span class="ch-badge cb-p">Post carrusel</span>
+    </div>
+    <div class="copy-anat">
+      <div class="an"><div class="an-l">Hook</div><div class="an-t">Romper la espera del fin de semana</div></div>
+      <div class="an"><div class="an-l">Cuerpo</div><div class="an-t">Amenidades en contexto, no lista fría</div></div>
+      <div class="an"><div class="an-l">CTA</div><div class="an-t">Entre semana = disponibilidad inmediata</div></div>
+    </div>
+    <div class="copy-body"><span class="hook">¿Por qué esperar al fin de semana para descansar de verdad?</span>
+
+<span class="cuerpo">De lunes a viernes, la quinta está disponible — y el silencio entre semana tiene algo que el fin de semana no puede darte.
+
+DayPass Exclusivo · 1pm a 8pm
+Alberca climatizada y techada · Jacuzzi · Fogatero · Cocina exterior · Asador · Billar · Futbolito · Jardines.
+Todo el espacio. Solo para tu grupo.</span>
+
+<span class="cierre">Desde $3,900 MXN · hasta 15 personas
+
+📍 Salamanca, Gto. · Una sola reserva al día.
+📲 wa.me/4641704249
+🔗 atom.bio/quinta-tabachin
+
+#DayPass #Salamanca #QuintaTabachin #AlbercaPrivada #EntreSemanaDiferente #Guanajuato</span></div>
+    <div class="copy-nota">💡 Este post es evergreen — funciona cualquier semana sin cambios. Slide 1: mejor foto alberca con texto "¿Por qué esperar al fin de semana?" Slide final: precio + CTA.</div>
+  </div>
+
+  <!-- COPY 5: Día del Niño (Mié 22 abr) -->
+  <div class="copy-card">
+    <div class="copy-head">
+      <div><div class="ch-sem">Mié 22 abril · Día del Niño preview (30 abr)</div><div class="ch-titulo">Post familias · Día del Niño</div></div>
+      <span class="ch-badge cb-p">Post carrusel</span>
+    </div>
+    <div class="copy-anat">
+      <div class="an"><div class="an-l">Hook</div><div class="an-t">Promesa directa para mamás y papás</div></div>
+      <div class="an"><div class="an-l">Cuerpo</div><div class="an-t">Lo que viven los niños · lo que viven los papás</div></div>
+      <div class="an"><div class="an-l">Urgencia</div><div class="an-t">Fecha específica con disponibilidad real</div></div>
+    </div>
+    <div class="copy-body"><span class="hook">El Día del Niño que sí van a recordar — y que también vas a disfrutar tú.</span>
+
+<span class="cuerpo">Ellos: alberca, futbolito, billar, jardines para correr y una fogata para terminar el día.
+Tú: sin organizar nada extra, sin coordinar con otros papás, sin salir del espacio.
+
+La quinta entera es de tu familia desde que llegan hasta que se van.</span>
+
+<span class="cierre">30 de abril disponible. Una sola reserva — el espacio completo es tuyo.
+
+Desde $3,999 MXN · hasta 15 personas
+
+📍 Salamanca, Gto.
+📲 wa.me/4641704249
+🔗 atom.bio/quinta-tabachin
+
+#DiadelNino #QuintaTabachin #Salamanca #FamiliaQT #AlbercaPrivada #Guanajuato</span></div>
+    <div class="copy-nota">💡 Si tienes fotos con niños y familias (con permiso), este es el momento de usarlas. Si no, usar fotos de alberca y jardín — el texto hace el trabajo visual.</div>
+  </div>
+
+  <!-- COPY 6: Cierre de mes (Dom 26 abr) -->
+  <div class="copy-card">
+    <div class="copy-head">
+      <div><div class="ch-sem">Dom 26 abril · Cierre del mes · 6pm</div><div class="ch-titulo">Post atmosférico + preventa mayo</div></div>
+      <span class="ch-badge cb-p">Post foto</span>
+    </div>
+    <div class="copy-anat">
+      <div class="an"><div class="an-l">Hook</div><div class="an-l" style="font-style:normal;font-size:10px;color:#5a705a;font-weight:300;">Cierre de ciclo que abre el siguiente</div></div>
+      <div class="an"><div class="an-l">Cuerpo</div><div class="an-t">Breve · poético · abre mayo</div></div>
+      <div class="an"><div class="an-l">CTA</div><div class="an-t">Suave · invitación a mayo</div></div>
+    </div>
+    <div class="copy-body"><span class="hook">Abril fue así. Mayo también puede serlo.</span>
+
+<span class="cuerpo">Días largos. Agua fría. Las noches que no quieres que terminen.
+Todo eso sigue aquí — y mayo tiene fechas disponibles.</span>
+
+<span class="cierre">📍 Una sola reserva al día. El espacio es solo tuyo.
+📲 wa.me/4641704249
+🔗 atom.bio/quinta-tabachin
+
+#QuintaTabachin #Salamanca #Mayo2026 #CasaDeCampo #AlojamientoPrivado #Guanajuato</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- ADS -->
+<div class="ads-wrap">
+  <span class="sec-l">▸ Campañas pagas · $4,000 MXN · distribución</span>
+  <div class="ad">
+    <div class="ad-n">01</div>
+    <div>
+      <div class="ad-nombre">Carrusel alojamiento · Hoy</div>
+      <div class="ad-fechas">26 mar – 2 abr · FB + IG · Objetivo: Mensajes</div>
+      <div class="ad-det"><strong>Creativo:</strong> El carrusel de 5 slides que publicamos hoy<br><strong>Público:</strong> Mujeres 28–45, Salamanca + Irapuato + Celaya + León, radio 40km<br><strong>KPI:</strong> &lt;$10 MXN / conversación · basado en CPL de $6 del mes pasado</div>
+    </div>
+    <div class="ad-bud"><span class="ab-n">$1,200</span><span class="ab-l">MXN</span></div>
+  </div>
+  <div class="ad">
+    <div class="ad-n">02</div>
+    <div>
+      <div class="ad-nombre">Post SS + Pascua disponible</div>
+      <div class="ad-fechas">3 – 8 abr · FB prioritario · Objetivo: Mensajes</div>
+      <div class="ad-det"><strong>Creativo:</strong> Mejor foto/clip de SS · copy "Pascua disponible 6-8 abr"<br><strong>Público:</strong> Retargeting quienes vieron ad 1 + frío Bajío 28–45<br><strong>KPI:</strong> Vender Pascua antes del 5 abr</div>
+    </div>
+    <div class="ad-bud"><span class="ab-n">$900</span><span class="ab-l">MXN</span></div>
+  </div>
+  <div class="ad">
+    <div class="ad-n">03</div>
+    <div>
+      <div class="ad-nombre">Eventos mayo · Push corporativo y social</div>
+      <div class="ad-fechas">9 – 20 abr · FB + IG · Objetivo: Mensajes</div>
+      <div class="ad-det"><strong>Creativo:</strong> Post eventos del 8 abr · copy "Mayo disponible"<br><strong>Público:</strong> Mujeres 30–50 + hombres 28–45, Salamanca + Irapuato, intereses: organización de eventos, celebraciones<br><strong>KPI:</strong> 10+ conversaciones de evento para mayo</div>
+    </div>
+    <div class="ad-bud"><span class="ab-n">$900</span><span class="ab-l">MXN</span></div>
+  </div>
+  <div class="ad">
+    <div class="ad-n">04</div>
+    <div>
+      <div class="ad-nombre">Día del Niño + Preventa mayo</div>
+      <div class="ad-fechas">22 – 26 abr · FB + IG · Objetivo: Mensajes</div>
+      <div class="ad-det"><strong>Creativo:</strong> Post Día del Niño · copy "30 abr + mayo disponible"<br><strong>Público:</strong> Familias con hijos, Salamanca + Irapuato + Celaya, mujeres 28–42<br><strong>KPI:</strong> 30 abr vendido + 15+ leads para mayo</div>
+    </div>
+    <div class="ad-bud"><span class="ab-n">$1,000</span><span class="ab-l">MXN</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- KPIS -->
+<div class="seccion" style="padding-top:0">
+  <span class="sec-l">▸ KPIs del período · Mar 26 – Abr 26</span>
+  <div class="kpis">
+    <div class="kpi"><span class="kn">&lt;$10</span><span class="kl">Costo por conversación (MXN)</span></div>
+    <div class="kpi"><span class="kn">Pascua</span><span class="kl">6-8 abr vendidos antes del 5</span></div>
+    <div class="kpi"><span class="kn">10+</span><span class="kl">Leads eventos mayo</span></div>
+    <div class="kpi"><span class="kn">30 abr</span><span class="kl">Día del Niño vendido antes del 27</span></div>
+    <div class="kpi"><span class="kn">20+</span><span class="kl">Clips UGC capturados en SS</span></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<div class="footer">
+  <div class="footer-m">Quinta Tabachín · Salamanca, Gto.</div>
+  <div class="footer-i">Plan Mar 26 – Abr 26 · 2026 · Uso interno · @TabachinQuinta</div>
+</div>
+
+</body>
+</html>
