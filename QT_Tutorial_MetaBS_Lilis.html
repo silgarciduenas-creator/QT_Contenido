@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutorial Meta Business Suite · Lilis · QT</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde: #1e3220; --verde-m: #2d4a2d; --verde-l: #537056;
+  --dorado: #c9a84c; --crema: #f5f0e8; --arena: #becbbf;
+  --texto: #1a2e1a; --gris: #7a8e7a; --blanco: #ffffff;
+  --azul: #1877f2; --azul-l: #e8f0fe;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Jost',sans-serif; background:var(--crema); color:var(--texto); }
+
+.header { background:var(--verde); padding:44px 52px 36px; }
+.eyebrow { font-size:10px; letter-spacing:4px; text-transform:uppercase; color:var(--dorado); margin-bottom:10px; }
+.header h1 { font-family:'Cormorant Garamond',serif; color:var(--crema); font-size:42px; font-weight:300; line-height:1.1; }
+.header h1 em { color:var(--dorado); font-style:italic; }
+.header-sub { margin-top:14px; font-size:13px; color:var(--arena); font-weight:300; line-height:1.7; max-width:600px; }
+
+.nav-tabs { background:var(--verde-m); display:flex; overflow-x:auto; }
+.ntab { padding:14px 24px; font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--arena); cursor:pointer; border-bottom:3px solid transparent; white-space:nowrap; transition:all .2s; font-weight:500; }
+.ntab.active { color:var(--dorado); border-bottom-color:var(--dorado); background:rgba(255,255,255,.05); }
+.ntab:hover { color:var(--crema); }
+
+.main-content { max-width:900px; margin:0 auto; padding:40px 40px; }
+.seccion { display:none; }
+.seccion.active { display:block; }
+
+.intro-card { background:var(--verde-m); border-radius:8px; padding:24px 28px; margin-bottom:32px; display:flex; gap:20px; align-items:flex-start; }
+.ic-icon { font-size:32px; flex-shrink:0; }
+.ic-text h3 { font-family:'Cormorant Garamond',serif; color:var(--dorado); font-size:22px; margin-bottom:8px; font-weight:400; }
+.ic-text p { font-size:12px; color:var(--arena); line-height:1.8; font-weight:300; }
+
+/* PASOS */
+.paso { display:flex; gap:20px; margin-bottom:28px; align-items:flex-start; }
+.paso-num { width:36px; height:36px; border-radius:50%; background:var(--verde-m); color:var(--dorado); font-family:'Cormorant Garamond',serif; font-size:18px; display:flex; align-items:center; justify-content:center; flex-shrink:0; font-weight:600; border:1px solid var(--dorado); }
+.paso-body { flex:1; }
+.paso-titulo { font-size:14px; font-weight:500; color:var(--texto); margin-bottom:6px; }
+.paso-desc { font-size:12px; color:#4a5e4a; line-height:1.8; font-weight:300; }
+.paso-desc strong { color:var(--verde-m); font-weight:500; }
+
+/* SIMULACIÓN DE INTERFAZ */
+.ui-sim { background:#f0f2f5; border-radius:10px; padding:18px; margin:14px 0; border:1px solid #ddd; }
+.ui-topbar { background:var(--azul); border-radius:6px 6px 0 0; padding:10px 16px; display:flex; align-items:center; gap:10px; margin:-18px -18px 16px; }
+.ui-logo { color:white; font-weight:700; font-size:16px; }
+.ui-nav-item { background:rgba(255,255,255,.15); color:white; font-size:11px; padding:5px 10px; border-radius:4px; }
+.ui-nav-item.active { background:rgba(255,255,255,.3); }
+.ui-btn { display:inline-block; padding:8px 16px; border-radius:6px; font-size:12px; font-weight:600; cursor:pointer; }
+.ui-btn-blue { background:var(--azul); color:white; }
+.ui-btn-grey { background:#e4e6eb; color:#050505; }
+.ui-btn-green { background:#42b72a; color:white; }
+.ui-field { background:white; border:1px solid #ddd; border-radius:6px; padding:10px 12px; font-size:12px; color:#666; margin-bottom:8px; }
+.ui-field-label { font-size:11px; color:#65676b; margin-bottom:3px; font-weight:500; }
+.ui-card { background:white; border-radius:8px; padding:14px 16px; margin-bottom:10px; border:1px solid #ddd; }
+.ui-card-title { font-size:13px; font-weight:600; color:#050505; margin-bottom:6px; }
+.ui-row { display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-bottom:10px; }
+
+/* HIGHLIGHT */
+.highlight { background:#fff3cd; border:1px solid #ffc107; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:12px; color:#664d03; line-height:1.7; }
+.highlight strong { font-weight:600; }
+.tip { background:#d1e7dd; border:1px solid #a3cfbb; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:12px; color:#0a3622; line-height:1.7; }
+.tip strong { font-weight:600; }
+.warning { background:#f8d7da; border:1px solid #f5c2c7; border-radius:6px; padding:12px 16px; margin:14px 0; font-size:12px; color:#842029; line-height:1.7; }
+.warning strong { font-weight:600; }
+
+/* CHECKLIST */
+.checklist { background:var(--blanco); border:1px solid #dde8dd; border-radius:8px; overflow:hidden; margin-bottom:20px; }
+.cl-header { background:var(--verde-m); padding:12px 18px; }
+.cl-header h3 { font-size:13px; font-weight:500; color:var(--crema); letter-spacing:1px; text-transform:uppercase; }
+.cl-item { display:flex; gap:12px; padding:12px 18px; border-bottom:1px solid #f0f5f0; align-items:flex-start; }
+.cl-item:last-child { border:none; }
+.cl-check { width:18px; height:18px; border:2px solid var(--verde-l); border-radius:3px; flex-shrink:0; margin-top:1px; }
+.cl-text { font-size:12px; color:var(--texto); line-height:1.6; font-weight:300; }
+.cl-text strong { font-weight:500; color:var(--verde-m); }
+.cl-badge { display:inline-block; font-size:9px; padding:2px 6px; border-radius:2px; font-weight:500; letter-spacing:1px; text-transform:uppercase; margin-left:6px; }
+.cb-diario { background:#e0ede0; color:#2d4a2d; }
+.cb-semanal { background:#fdf5e0; color:#7a5c2a; }
+
+/* ARROWS */
+.arrow-right { display:inline-block; color:var(--dorado); font-weight:600; margin:0 4px; }
+
+/* RUTA VISUAL */
+.ruta { display:flex; gap:0; margin:16px 0; flex-wrap:wrap; }
+.ruta-paso { display:flex; align-items:center; }
+.rp-texto { background:var(--verde-m); color:var(--crema); font-size:11px; padding:6px 12px; border-radius:3px; font-weight:500; white-space:nowrap; }
+.rp-arrow { color:var(--dorado); font-size:18px; padding:0 4px; }
+
+/* REGLAS FIJAS */
+.reglas-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin-bottom:24px; }
+.regla-card { background:var(--blanco); border:1px solid #dde8dd; border-radius:6px; padding:16px; border-top:3px solid var(--dorado); }
+.rc-titulo { font-size:11px; letter-spacing:1.5px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:8px; }
+.rc-texto { font-size:12px; color:var(--texto); line-height:1.7; font-weight:300; }
+.rc-texto strong { font-weight:500; color:var(--verde-m); }
+
+.divider { height:1px; background:var(--arena); margin:28px 0; }
+.sec-label { font-size:10px; letter-spacing:3px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:18px; display:block; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="eyebrow">Quinta Tabachín · Manual operativo · Community Manager</div>
+  <h1>Tutorial <em>Meta Business Suite</em></h1>
+  <div class="header-sub">Manual completo para Lilis. Todo lo que necesitas para programar contenido en Facebook e Instagram, responder mensajes y mantener el ritmo del plan mensual.</div>
+</div>
+
+<div class="nav-tabs">
+  <div class="ntab active" onclick="activarSec(this,'inicio')">Inicio rápido</div>
+  <div class="ntab" onclick="activarSec(this,'programar')">Programar post</div>
+  <div class="ntab" onclick="activarSec(this,'carrusel')">Subir carrusel</div>
+  <div class="ntab" onclick="activarSec(this,'mensajes')">Mensajes / DMs</div>
+  <div class="ntab" onclick="activarSec(this,'checklist')">Checklist diario</div>
+  <div class="ntab" onclick="activarSec(this,'reglas')">Reglas fijas</div>
+</div>
+
+<div class="main-content">
+
+  <!-- INICIO RÁPIDO -->
+  <div class="seccion active" id="sec-inicio">
+    <div class="intro-card">
+      <div class="ic-icon">👋</div>
+      <div class="ic-text">
+        <h3>Hola Lilis. Esto es lo que harás cada día.</h3>
+        <p>Meta Business Suite es la herramienta donde programas los posts de Facebook e Instagram, y donde llegas los mensajes de clientes que quieren reservar. Este manual te explica exactamente cómo usarla paso a paso. Siempre tienes el Planner mensual para saber qué publicar cada día.</p>
+      </div>
+    </div>
+
+    <span class="sec-label">¿Dónde entrar?</span>
+    <div class="paso">
+      <div class="paso-num">1</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Entra a business.facebook.com</div>
+        <div class="paso-desc">Desde cualquier navegador (Chrome preferido). Inicia sesión con la cuenta de Facebook que Silvia te dio acceso. <strong>No uses tu cuenta personal.</strong></div>
+        <div class="ruta" style="margin-top:10px">
+          <div class="ruta-paso"><div class="rp-texto">business.facebook.com</div><div class="rp-arrow">→</div></div>
+          <div class="ruta-paso"><div class="rp-texto">Iniciar sesión</div><div class="rp-arrow">→</div></div>
+          <div class="ruta-paso"><div class="rp-texto">Seleccionar cuenta QT</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">2</div>
+      <div class="paso-body">
+        <div class="paso-titulo">También puedes usar la app en tu celular</div>
+        <div class="paso-desc">Busca <strong>"Meta Business Suite"</strong> en App Store o Google Play. Es la misma herramienta, en tu teléfono. Útil para revisar mensajes rápido cuando estás fuera de la computadora.</div>
+        <div class="tip"><strong>Tip:</strong> Para programar posts con imágenes, es más fácil desde computadora. Para revisar mensajes, la app del celular es más rápida.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">3</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Las 3 secciones que usarás todos los días</div>
+        <div class="paso-desc">
+          <strong>Inicio (Home):</strong> Resumen de mensajes nuevos y notificaciones.<br>
+          <strong>Contenido (Content):</strong> Aquí programas los posts de FB e IG.<br>
+          <strong>Bandeja de entrada (Inbox):</strong> Aquí llegan todos los DMs y comentarios.
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <span class="sec-label">Flujo de trabajo diario de Lilis</span>
+    <div class="ruta" style="flex-direction:column; gap:8px">
+      <div class="ruta-paso"><div class="rp-texto">1. Revisar Planner mensual</div><div class="rp-arrow">→</div><div style="font-size:11px;color:var(--gris);padding:4px 0">¿Qué toca publicar hoy?</div></div>
+      <div class="ruta-paso"><div class="rp-texto">2. Abrir Meta Business Suite</div><div class="rp-arrow">→</div><div style="font-size:11px;color:var(--gris);padding:4px 0">Revisar mensajes primero (menos de 4hrs)</div></div>
+      <div class="ruta-paso"><div class="rp-texto">3. Programar el post del día</div><div class="rp-arrow">→</div><div style="font-size:11px;color:var(--gris);padding:4px 0">Copiar el copy del Planner, subir foto, programar hora</div></div>
+      <div class="ruta-paso"><div class="rp-texto">4. Revisar mensajes por la tarde</div><div class="rp-arrow">→</div><div style="font-size:11px;color:var(--gris);padding:4px 0">Responder o escalar a Wendy si quiere reservar</div></div>
+      <div class="ruta-paso"><div class="rp-texto">5. Publicar stories (si aplica)</div><div class="rp-arrow">→</div><div style="font-size:11px;color:var(--gris);padding:4px 0">Directo desde Instagram, no desde Meta BS</div></div>
+    </div>
+  </div>
+
+  <!-- PROGRAMAR POST -->
+  <div class="seccion" id="sec-programar">
+    <div class="intro-card">
+      <div class="ic-icon">📅</div>
+      <div class="ic-text">
+        <h3>Cómo programar un post en FB e IG al mismo tiempo</h3>
+        <p>Siguiendo estos pasos, el post se publica automáticamente en Facebook e Instagram en el horario que tú elijas. Solo lo haces una vez para ambas plataformas.</p>
+      </div>
+    </div>
+
+    <span class="sec-label">Paso a paso · Post con foto</span>
+
+    <div class="paso">
+      <div class="paso-num">1</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Ir a "Contenido" → "Crear publicación"</div>
+        <div class="paso-desc">En el menú lateral izquierdo, haz clic en <strong>Contenido</strong>. Luego clic en el botón azul <strong>"Crear publicación"</strong> (arriba a la derecha).</div>
+        <div class="ui-sim">
+          <div class="ui-topbar"><span class="ui-logo">Meta Business Suite</span><span class="ui-nav-item">Inicio</span><span class="ui-nav-item active">Contenido</span><span class="ui-nav-item">Bandeja</span></div>
+          <div class="ui-row"><div class="ui-btn ui-btn-blue">+ Crear publicación</div><div class="ui-btn ui-btn-grey">Programar</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">2</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Seleccionar Facebook e Instagram</div>
+        <div class="paso-desc">Aparecerán dos opciones con logos. <strong>Activa los dos</strong> — Facebook y el Instagram de @TabachinQuinta. Así publicas en ambos con un solo paso.</div>
+        <div class="highlight"><strong>Importante:</strong> Verifica que el Instagram seleccionado sea <strong>@tabachinquinta</strong> y el Facebook sea <strong>Quinta Tabachín</strong>. Si ves otra cuenta, avísale a Silvia antes de publicar.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">3</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Subir la foto o imagen</div>
+        <div class="paso-desc">Haz clic en el ícono de foto/imagen dentro del editor. Selecciona el archivo desde tu computadora o celular. <strong>Espera a que cargue completamente</strong> antes de continuar.</div>
+        <div class="tip"><strong>Tamaño ideal:</strong> 1080 × 1080 px (cuadrado). Los slides del Planner ya vienen en este formato. <strong>Nunca subir fotos de menos de 600px</strong> — se ven borrosas.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">4</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Pegar el copy en el campo de texto</div>
+        <div class="paso-desc">En el Planner, abre el día que corresponde → haz clic en el post → clic en <strong>"Copiar copy completo"</strong>. Luego pega (Ctrl+V) en el campo de texto de Meta Business Suite.</div>
+        <div class="ui-sim">
+          <div class="ui-topbar" style="background:#444"><span class="ui-logo" style="font-size:13px">Editor de publicación</span></div>
+          <div class="ui-field-label">Texto de la publicación</div>
+          <div class="ui-field">¿Cuándo fue la última vez que tu grupo tuvo un espacio completamente para ustedes?<br><br>Sin extraños. Sin compartir la alberca...</div>
+          <div style="font-size:11px;color:#65676b;margin-top:4px">Caracteres: 324 / 2200</div>
+        </div>
+        <div class="warning"><strong>No cambies el copy.</strong> Está optimizado para generar reservas. Si ves algo que quieres corregir, avísale a Silvia primero.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">5</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Programar la hora exacta (NO publicar ahora)</div>
+        <div class="paso-desc">En lugar de "Publicar ahora", haz clic en la flecha ▼ junto al botón y selecciona <strong>"Programar publicación"</strong>. Ingresa la fecha y hora del Planner.</div>
+        <div class="ui-sim">
+          <div class="ui-row">
+            <div class="ui-btn ui-btn-grey">▼ Opciones de publicación</div>
+          </div>
+          <div class="ui-card">
+            <div class="ui-card-title">Programar publicación</div>
+            <div class="ui-field-label">Fecha</div>
+            <div class="ui-field">Lunes, 7 de abril de 2026</div>
+            <div class="ui-field-label">Hora</div>
+            <div class="ui-field">6:00 PM</div>
+            <div class="ui-btn ui-btn-blue" style="margin-top:8px">Programar</div>
+          </div>
+        </div>
+        <div class="tip"><strong>Horarios del Planner:</strong> Lunes → 6pm · Miércoles → 3–6pm · Domingo → 6pm · Otros días → según el Planner.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">6</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Verificar que quedó programado</div>
+        <div class="paso-desc">Después de programar, verás el post en la sección <strong>"Programado"</strong> dentro de Contenido. Confirma que la fecha, hora, foto y texto estén correctos. Si algo está mal, puedes editarlo antes de que se publique.</div>
+        <div class="tip"><strong>Doble check siempre:</strong> ¿Está seleccionado FB e IG? ¿La foto subió bien? ¿El copy incluye el WA y la web? ¿La hora es la correcta?</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CARRUSEL -->
+  <div class="seccion" id="sec-carrusel">
+    <div class="intro-card">
+      <div class="ic-icon">🎠</div>
+      <div class="ic-text">
+        <h3>Cómo subir un carrusel (varias imágenes)</h3>
+        <p>Un carrusel es un post con varias fotos que el usuario puede deslizar. Los slides de alojamiento, DayPass y eventos se publican en este formato.</p>
+      </div>
+    </div>
+
+    <span class="sec-label">Diferencia clave con un post normal</span>
+    <div class="highlight"><strong>Post normal:</strong> 1 imagen. <strong>Carrusel:</strong> 2 a 10 imágenes que se deslizan. El Planner indica cuándo es carrusel y cuántos slides tiene.</div>
+
+    <div class="paso">
+      <div class="paso-num">1</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Crear publicación → agregar múltiples fotos</div>
+        <div class="paso-desc">Al hacer clic en el ícono de foto, puedes seleccionar varios archivos a la vez. <strong>Mantén presionado Ctrl (o Cmd en Mac) para seleccionar varias fotos.</strong> El orden en que los seleccionas es el orden en que aparecen.</div>
+        <div class="tip"><strong>Orden correcto del carrusel de alojamiento:</strong><br>1. Foto aérea (portada) → 2. Alberca → 3. Habitación → 4. Zona juegos → 5. Slide cierre verde (fondo sólido)</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">2</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Verificar el orden de los slides</div>
+        <div class="paso-desc">Verás una vista previa de todos los slides en orden. Puedes arrastrar las imágenes para reordenarlas si es necesario. <strong>La primera imagen es la portada</strong> — la que ve el usuario antes de deslizar.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">3</div>
+      <div class="paso-body">
+        <div class="paso-titulo">El texto del carrusel va en el caption general</div>
+        <div class="paso-desc">El copy del Planner va en el campo de texto principal (el caption), no en cada imagen por separado. Las imágenes ya tienen el texto integrado en los slides.</div>
+        <div class="warning"><strong>No subas los slides sin el caption.</strong> El caption es donde va el copy con el WA, la web y el slogan. Sin él, el post no convierte.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">4</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Programar igual que un post normal</div>
+        <div class="paso-desc">El proceso es idéntico al post de una sola imagen. Programa la fecha y hora del Planner, verifica y confirma.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <span class="sec-label">Nota sobre Reels</span>
+    <div class="highlight"><strong>Los Reels se suben directamente desde Instagram</strong>, no desde Meta Business Suite. Para subir un reel: abre Instagram → + → Reel → selecciona el video → agrega el caption del Planner → publica o programa desde Instagram Creator Studio. Silvia normalmente se encarga de los reels.</div>
+  </div>
+
+  <!-- MENSAJES -->
+  <div class="seccion" id="sec-mensajes">
+    <div class="intro-card">
+      <div class="ic-icon">💬</div>
+      <div class="ic-text">
+        <h3>Cómo revisar y responder mensajes</h3>
+        <p>La Bandeja de entrada de Meta Business Suite une los DMs de Facebook e Instagram en un solo lugar. Tu objetivo: responder en menos de 4 horas (lunes a sábado, 9am a 5pm).</p>
+      </div>
+    </div>
+
+    <span class="sec-label">Llegar a la bandeja</span>
+    <div class="ruta">
+      <div class="ruta-paso"><div class="rp-texto">Meta Business Suite</div><div class="rp-arrow">→</div></div>
+      <div class="ruta-paso"><div class="rp-texto">Bandeja de entrada</div><div class="rp-arrow">→</div></div>
+      <div class="ruta-paso"><div class="rp-texto">Ver todos los mensajes</div></div>
+    </div>
+
+    <div class="divider"></div>
+    <span class="sec-label">Tipos de mensaje y cómo responder</span>
+
+    <div class="paso">
+      <div class="paso-num">🔵</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Preguntan información general (precio, horarios, qué incluye)</div>
+        <div class="paso-desc">Responde con la información del manual de QT que Silvia te compartió. Siempre termina con: <strong>"¿Para qué fecha te interesa? Te confirmo disponibilidad de inmediato."</strong></div>
+        <div class="tip"><strong>Nunca digas "no sé".</strong> Si no tienes la respuesta, di: "Dame un momento para confirmarte" y consulta con Wendy o Silvia por WhatsApp.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">🟡</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Preguntan disponibilidad para una fecha específica</div>
+        <div class="paso-desc">1. Revisa el Planner o el calendario de Google Sheets de Wendy.<br>2. Si está disponible: confirma y envía el WA de Wendy para que continúen: <strong>wa.me/4641704249</strong><br>3. Si no está disponible: ofrece fechas cercanas disponibles.</div>
+        <div class="highlight"><strong>Escalación a Wendy:</strong> Cuando el cliente confirma interés real en reservar, escríbele a Wendy: "Hola Wendy, [Nombre del cliente] en FB/IG quiere reservar para [fecha]. Le dije que te escribiera al WA." Wendy toma desde ahí.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">🟢</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Quieren reservar / pedir cotización</div>
+        <div class="paso-desc">Primero necesitas saber: <strong>¿Qué modalidad? (alojamiento, DayPass, evento) · ¿Cuántas personas? · ¿Qué fecha?</strong><br><br>Con esos 3 datos, Wendy puede cotizar. Envía el mensaje al WA: <strong>wa.me/4641704249</strong></div>
+        <div class="warning"><strong>No des precios sin tener los 3 datos.</strong> La tarifa varía según personas y modalidad. Un precio mal dado puede crear problemas con el cliente.</div>
+      </div>
+    </div>
+
+    <div class="paso">
+      <div class="paso-num">🔴</div>
+      <div class="paso-body">
+        <div class="paso-titulo">Queja, problema o situación difícil</div>
+        <div class="paso-desc">Responde con calma: <strong>"Muchas gracias por escribirnos. Voy a comentarle a la persona encargada para que te contacte a la brevedad."</strong><br>Luego avísale a Silvia o Wendy de inmediato por WhatsApp.</div>
+        <div class="warning"><strong>Nunca discutas con un cliente en redes.</strong> Nunca prometas cosas que no puedes confirmar. Si no sabes qué decir, escala y espera instrucción.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <span class="sec-label">Mensaje de respuesta sugerido · copia y adapta</span>
+    <div style="background:#f0f5f0; border:1px solid #dde8dd; border-radius:6px; padding:16px 18px; font-size:12px; line-height:1.9; color:var(--texto); font-family:'Jost',sans-serif; font-weight:300; white-space:pre-wrap;">¡Hola [nombre]! 🌿 Gracias por escribirnos.
+
+Con gusto te ayudo. Para darte toda la información que necesitas, ¿me puedes decir:
+- ¿Para qué fecha estás pensando?
+- ¿Cuántas personas serían?
+- ¿Alojamiento (quedarse a dormir), DayPass (de 1pm a 8pm) o un evento?
+
+Con eso te confirmo disponibilidad y te doy todos los detalles.
+
+📍 Recuerda que tenemos una sola reserva por día — el espacio es completamente tuyo.
+🌐 quintatabachin.com.mx</div>
+  </div>
+
+  <!-- CHECKLIST DIARIO -->
+  <div class="seccion" id="sec-checklist">
+    <div class="intro-card">
+      <div class="ic-icon">✅</div>
+      <div class="ic-text">
+        <h3>Checklist de Lilis · Lunes a Sábado</h3>
+        <p>Sigue este checklist todos los días. Si algo no está claro o no puedes completarlo, avísale a Silvia antes de las 11am.</p>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <div class="cl-header"><h3>🌅 Mañana · 9 – 11am</h3></div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Revisar bandeja de entrada</strong> FB e IG — responder mensajes pendientes de la noche anterior. <span class="cl-badge cb-diario">Diario</span></div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Abrir el Planner mensual</strong> — identificar qué toca publicar hoy y a qué hora. <span class="cl-badge cb-diario">Diario</span></div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Confirmar que el post programado de ayer se publicó correctamente.</strong> Ir a Contenido → Publicado y verificar. <span class="cl-badge cb-diario">Diario</span></div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Si hay UGC de clientes</strong> (etiquetaron a @tabachinquinta): repostear en stories de Instagram de inmediato. Avisar a Silvia. <span class="cl-badge cb-diario">Cuando llegue</span></div>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <div class="cl-header"><h3>☀️ Mediodía · 11am – 2pm</h3></div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Preparar el post del día</strong> — copiar el copy del Planner, tener la imagen lista, programar en Meta Business Suite. <span class="cl-badge cb-diario">Diario</span></div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Publicar stories</strong> del día según el Planner — directo desde Instagram. <span class="cl-badge cb-diario">Diario</span></div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Si es lunes:</strong> revisar el Planner completo de la semana y preparar las imágenes de los posts de los próximos 3 días. <span class="cl-badge cb-semanal">Lunes</span></div>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <div class="cl-header"><h3>🌆 Tarde · 2 – 5pm</h3></div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Segunda revisión de mensajes</strong> — responder o escalar. Meta: ningún mensaje sin respuesta por más de 4 horas. <span class="cl-badge cb-diario">Diario</span></div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Revisar comentarios</strong> en los últimos 3 posts — responder los que tengan preguntas o interés. Likes y emojis no necesitan respuesta. <span class="cl-badge cb-diario">Diario</span></div>
+      </div>
+      <div class="cl-item">
+        <div class="cl-check"></div>
+        <div class="cl-text"><strong>Enviar resumen semanal a Silvia</strong> (viernes): número de mensajes recibidos, cuántos escaló a Wendy, cualquier situación especial. <span class="cl-badge cb-semanal">Viernes</span></div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <div class="warning"><strong>Si vas a faltar o llegar tarde:</strong> avísale a Silvia la noche anterior por WhatsApp. Los mensajes de clientes no pueden esperar más de 4 horas. Si es domingo: Chuy cubre la bandeja.</div>
+  </div>
+
+  <!-- REGLAS FIJAS -->
+  <div class="seccion" id="sec-reglas">
+    <div class="intro-card">
+      <div class="ic-icon">📋</div>
+      <div class="ic-text">
+        <h3>Reglas que nunca cambian</h3>
+        <p>Estas reglas aplican siempre, sin excepción. Si tienes duda sobre algo, la respuesta siempre es: "consulta con Silvia antes de actuar".</p>
+      </div>
+    </div>
+
+    <div class="reglas-grid">
+      <div class="regla-card">
+        <div class="rc-titulo">Solo mensajes · nunca llamadas</div>
+        <div class="rc-texto">En todos los posts y respuestas, el contacto es únicamente por <strong>WhatsApp, Facebook e Instagram</strong>. Si alguien pide un número para llamar, responde: "Atendemos únicamente por mensaje para darte una respuesta más rápida y completa. 📲 wa.me/4641704249"</div>
+      </div>
+      <div class="regla-card">
+        <div class="rc-titulo">Siempre incluir la web</div>
+        <div class="rc-texto">En todo post y respuesta importante mencionar: <strong>quintatabachin.com.mx</strong>. Es el sitio oficial y la referencia de precios y disponibilidad para el cliente.</div>
+      </div>
+      <div class="regla-card">
+        <div class="rc-titulo">Nunca vender el mismo día</div>
+        <div class="rc-texto">Si una fecha está disponible hoy, <strong>no la mencionas como disponible hoy</strong>. El Planner ya indica cuándo comunicar cada fecha. Mínimo 3 días antes.</div>
+      </div>
+      <div class="regla-card">
+        <div class="rc-titulo">No modificar el copy del Planner</div>
+        <div class="rc-texto">El copy está optimizado para generar reservas. <strong>No agregues, quites ni cambies palabras</strong> sin consultarle a Silvia. Pegar exactamente como está.</div>
+      </div>
+      <div class="regla-card">
+        <div class="rc-titulo">Reposteo UGC siempre inmediato</div>
+        <div class="rc-texto">Cuando un cliente etiqueta a @tabachinquinta en una historia o post, <strong>repostearlo en stories de inmediato</strong> — el mismo día, la misma hora. Avisar a Silvia.</div>
+      </div>
+      <div class="regla-card">
+        <div class="rc-titulo">Escalación a Wendy</div>
+        <div class="rc-texto">Cuando el cliente confirma interés real en reservar, <strong>escalar a Wendy</strong> — no intentar cotizar tú misma. Dar el WA: wa.me/4641704249 y avisar a Wendy por WhatsApp.</div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+    <span class="sec-label">Contactos de escalación</span>
+    <div style="background:var(--verde-m); border-radius:8px; padding:20px 24px;">
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+        <div style="text-align:center;">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--arena);margin-bottom:6px">Reservas y operación</div>
+          <div style="font-size:14px;font-weight:500;color:var(--crema)">Wendy</div>
+          <div style="font-size:12px;color:var(--dorado);margin-top:4px">wa.me/4641704249</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--arena);margin-bottom:6px">Marketing y contenido</div>
+          <div style="font-size:14px;font-weight:500;color:var(--crema)">Silvia</div>
+          <div style="font-size:12px;color:var(--dorado);margin-top:4px">WhatsApp directo</div>
+        </div>
+        <div style="text-align:center;">
+          <div style="font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--arena);margin-bottom:6px">Cobertura dominical</div>
+          <div style="font-size:14px;font-weight:500;color:var(--crema)">Chuy</div>
+          <div style="font-size:12px;color:var(--dorado);margin-top:4px">Domingos · bandeja</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-content -->
+
+<div style="background:var(--verde); padding:20px 52px; display:flex; justify-content:space-between; align-items:center; margin-top:40px;">
+  <div style="font-family:'Cormorant Garamond',serif; color:var(--dorado); font-size:15px; font-style:italic;">Quinta Tabachín · Manual Community Manager</div>
+  <div style="font-size:10px; color:var(--arena); letter-spacing:1px;">Lilis · Versión Abril 2026 · Uso interno</div>
+</div>
+
+<script>
+function activarSec(el, id) {
+  document.querySelectorAll('.ntab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.seccion').forEach(s => s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('sec-' + id).classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+</script>
+</body>
+</html>
