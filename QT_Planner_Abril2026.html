@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planner QT · Abril 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde: #1e3220; --verde-m: #2d4a2d; --verde-l: #537056;
+  --dorado: #c9a84c; --dorado-l: #e2c97e;
+  --crema: #f5f0e8; --arena: #becbbf; --terracota: #b36b4b;
+  --texto: #1a2e1a; --gris: #7a8e7a; --blanco: #ffffff;
+  --aloj: #2d4a2d; --evento: #7a3a1a; --day: #3a5a2a; --story: #1a2e5a; --reel: #7a5a1a;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html, body { height:100%; }
+body { font-family:'Jost',sans-serif; background:var(--crema); color:var(--texto); display:flex; flex-direction:column; }
+
+/* TOP BAR */
+.topbar { background:var(--verde); padding:16px 28px; display:flex; align-items:center; justify-content:space-between; flex-shrink:0; }
+.tb-brand { font-family:'Cormorant Garamond',serif; color:var(--dorado); font-size:22px; font-weight:300; font-style:italic; }
+.tb-nav { display:flex; align-items:center; gap:12px; }
+.tb-mes { font-family:'Cormorant Garamond',serif; color:var(--crema); font-size:20px; font-weight:300; min-width:160px; text-align:center; }
+.btn-nav { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.2); color:var(--crema); padding:6px 14px; cursor:pointer; font-family:'Jost',sans-serif; font-size:13px; border-radius:2px; transition:background .2s; }
+.btn-nav:hover { background:rgba(255,255,255,.2); }
+.tb-right { display:flex; align-items:center; gap:10px; }
+.tb-tag { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:var(--arena); }
+
+/* LEYENDA */
+.leyenda { background:var(--verde-m); padding:8px 28px; display:flex; gap:20px; flex-wrap:wrap; flex-shrink:0; }
+.ley { display:flex; align-items:center; gap:6px; font-size:10px; color:var(--arena); letter-spacing:1px; text-transform:uppercase; cursor:pointer; }
+.ley-dot { width:8px; height:8px; border-radius:2px; flex-shrink:0; }
+.ld-aloj { background:#6a9a6a; }
+.ld-evento { background:#c07050; }
+.ld-day { background:#7aaa5a; }
+.ld-story { background:#7090d0; }
+.ld-reel { background:var(--dorado); }
+.ld-libre { background:#a0c890; }
+.ld-ss { background:#d4a820; }
+
+/* LAYOUT PRINCIPAL */
+.main { display:flex; flex:1; overflow:hidden; }
+
+/* CALENDARIO */
+.cal-wrap { flex:1; overflow-y:auto; padding:20px 28px; }
+.cal-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; }
+.cal-header-day { text-align:center; font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--gris); padding:8px 0; font-weight:500; }
+.dia { background:var(--blanco); border:1px solid #dde8dd; border-radius:6px; min-height:120px; cursor:pointer; transition:all .15s; overflow:hidden; position:relative; }
+.dia:hover { border-color:var(--dorado); box-shadow:0 2px 8px rgba(45,74,45,.15); transform:translateY(-1px); }
+.dia.selected { border-color:var(--dorado); border-width:2px; box-shadow:0 3px 12px rgba(201,168,76,.25); }
+.dia.vacio { background:#f8f8f8; border-color:#ebebeb; cursor:default; }
+.dia.vacio:hover { transform:none; box-shadow:none; border-color:#ebebeb; }
+.dia.ocupado { background:#f8f5f2; }
+.dia.disponible { background:#f0f8f0; }
+.dia.ss-dia { background:#fef9ec; }
+.dia.hoy { border-color:var(--verde-l); border-width:2px; }
+.dia-header { padding:7px 9px 5px; display:flex; justify-content:space-between; align-items:flex-start; }
+.dia-num { font-family:'Cormorant Garamond',serif; font-size:22px; font-weight:300; line-height:1; color:var(--texto); }
+.dia.hoy .dia-num { color:var(--verde-l); font-weight:600; }
+.dia-status { font-size:8px; letter-spacing:1px; text-transform:uppercase; padding:2px 5px; border-radius:2px; font-weight:500; }
+.st-libre { background:#e0f0e0; color:#2a6a2a; }
+.st-ocupado { background:#f0ece8; color:#6a4a2a; }
+.st-ss { background:#fef0c0; color:#7a5a10; }
+.dia-piezas { padding:4px 9px 8px; display:flex; flex-direction:column; gap:3px; }
+.pieza-chip { font-size:9px; padding:2px 7px; border-radius:2px; font-weight:500; letter-spacing:.5px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.pc-aloj { background:#e0ede0; color:var(--aloj); }
+.pc-evento { background:#f0e0d8; color:var(--evento); }
+.pc-day { background:#e8f0e0; color:var(--day); }
+.pc-story { background:#e0e8f5; color:var(--story); }
+.pc-reel { background:#fdf5e0; color:var(--reel); }
+.pc-ad { background:#fff0d8; color:#7a4a10; }
+.pc-doc { background:#f0f0f0; color:#6a6a6a; }
+.dia-mas { font-size:9px; color:var(--gris); padding:0 9px 6px; }
+
+/* PANEL LATERAL */
+.panel { width:420px; background:var(--blanco); border-left:1px solid #dde8dd; overflow-y:auto; flex-shrink:0; display:flex; flex-direction:column; transition:width .3s; }
+.panel.cerrado { width:0; border:none; overflow:hidden; }
+.panel-header { background:var(--verde); padding:18px 22px; flex-shrink:0; }
+.ph-fecha { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--arena); margin-bottom:4px; }
+.ph-titulo { font-family:'Cormorant Garamond',serif; color:var(--crema); font-size:22px; font-weight:300; }
+.ph-status { font-size:10px; color:var(--dorado); margin-top:4px; }
+.panel-close { float:right; background:none; border:none; color:var(--arena); font-size:20px; cursor:pointer; padding:0; line-height:1; }
+.panel-body { flex:1; overflow-y:auto; }
+
+/* TABS */
+.tabs { display:flex; background:#f8faf8; border-bottom:1px solid #dde8dd; flex-shrink:0; }
+.tab { flex:1; padding:10px 8px; font-size:11px; font-weight:500; text-align:center; cursor:pointer; color:var(--gris); border-bottom:2px solid transparent; transition:all .15s; letter-spacing:.5px; text-transform:uppercase; }
+.tab.active { color:var(--verde-m); border-bottom-color:var(--dorado); background:var(--blanco); }
+.tab-content { display:none; padding:18px 20px; }
+.tab-content.active { display:block; }
+
+/* PIEZAS EN PANEL */
+.pieza-bloque { margin-bottom:20px; border:1px solid #e8ede8; border-radius:6px; overflow:hidden; }
+.pb-header { padding:10px 14px; display:flex; align-items:center; gap:10px; cursor:pointer; user-select:none; }
+.pb-header:hover { background:#f8faf8; }
+.pb-tipo-badge { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; padding:3px 8px; border-radius:2px; font-weight:600; }
+.pb-nombre { font-size:13px; font-weight:500; color:var(--texto); flex:1; }
+.pb-hora { font-size:10px; color:var(--gris); }
+.pb-arrow { font-size:12px; color:var(--gris); transition:transform .2s; }
+.pb-arrow.open { transform:rotate(180deg); }
+.pb-body { display:none; padding:14px 16px; background:#fafaf7; border-top:1px solid #e8ede8; }
+.pb-body.open { display:block; }
+
+/* COPY DISPLAY */
+.copy-seccion { margin-bottom:14px; }
+.cs-label { font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--dorado); font-weight:500; margin-bottom:6px; }
+.cs-texto { font-size:12px; line-height:1.85; color:var(--texto); font-weight:300; white-space:pre-wrap; background:var(--blanco); border:1px solid #e8ede8; border-radius:4px; padding:10px 12px; }
+.cs-texto.hook { border-left:3px solid var(--verde-l); }
+.cs-texto.cta-box { border-left:3px solid var(--dorado); background:#fdf8f0; }
+.copy-full { font-size:12px; line-height:1.9; color:var(--texto); font-weight:300; white-space:pre-wrap; background:var(--blanco); border:1px solid #e8ede8; border-radius:4px; padding:12px 14px; }
+.btn-copy { background:var(--verde-m); color:var(--crema); border:none; padding:8px 16px; font-family:'Jost',sans-serif; font-size:11px; font-weight:500; letter-spacing:1px; text-transform:uppercase; cursor:pointer; border-radius:3px; width:100%; margin-top:10px; transition:background .15s; }
+.btn-copy:hover { background:var(--verde); }
+.btn-copy.copied { background:#3B6D11; }
+
+/* STORIES */
+.story-item { background:var(--blanco); border:1px solid #dde8ee; border-left:3px solid #5070c0; border-radius:4px; padding:10px 12px; margin-bottom:8px; }
+.si-num { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#5070c0; font-weight:500; margin-bottom:4px; }
+.si-texto { font-size:12px; color:var(--texto); line-height:1.6; font-weight:300; }
+.si-nota { font-size:10px; color:var(--gris); margin-top:5px; font-style:italic; }
+
+/* NOTAS */
+.nota-diseno { background:#fdf8f0; border:1px solid #e8d090; border-radius:4px; padding:10px 12px; font-size:11px; color:#7a5c2a; line-height:1.7; margin-bottom:10px; }
+.nota-diseno strong { font-weight:500; }
+
+/* RESUMEN PANEL */
+.resumen-mes { padding:18px 20px; }
+.rm-stat { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid #f0f0f0; font-size:12px; }
+.rm-stat:last-child { border:none; }
+.rm-key { color:var(--gris); }
+.rm-val { font-weight:500; color:var(--texto); }
+
+/* ADS PANEL */
+.ad-bloque { background:#fdf8f0; border:1px solid #e8d090; border-radius:6px; padding:14px 16px; margin-bottom:12px; }
+.ab-nombre { font-size:13px; font-weight:500; color:var(--texto); margin-bottom:4px; }
+.ab-fechas { font-size:10px; color:var(--gris); margin-bottom:8px; }
+.ab-det { font-size:11px; color:#5a5a3a; line-height:1.7; }
+.ab-budget { display:inline-block; background:var(--dorado); color:var(--verde); font-size:11px; font-weight:600; padding:3px 10px; border-radius:2px; margin-top:6px; }
+
+/* FIJO SIEMPRE */
+.cta-fijo { background:var(--verde); border-radius:6px; padding:14px 16px; margin-bottom:12px; }
+.cf-titulo { font-size:10px; letter-spacing:2px; text-transform:uppercase; color:var(--dorado); margin-bottom:10px; font-weight:500; }
+.cf-line { font-size:11px; color:var(--arena); line-height:1.9; font-family:'Jost',sans-serif; }
+.cf-line strong { color:var(--crema); }
+
+/* EMPTY STATE */
+.empty-state { padding:40px 20px; text-align:center; color:var(--gris); }
+.es-icon { font-size:32px; margin-bottom:12px; opacity:.4; }
+.es-text { font-size:13px; line-height:1.6; }
+</style>
+</head>
+<body>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <div class="tb-brand">Quinta Tabachín</div>
+  <div class="tb-nav">
+    <button class="btn-nav" onclick="cambiarMes(-1)">← Anterior</button>
+    <div class="tb-mes" id="mes-titulo">Abril 2026</div>
+    <button class="btn-nav" onclick="cambiarMes(1)">Siguiente →</button>
+  </div>
+  <div class="tb-right">
+    <div class="tb-tag">@TabachinQuinta · Plan mensual</div>
+  </div>
+</div>
+
+<!-- LEYENDA -->
+<div class="leyenda">
+  <div class="ley"><div class="ley-dot ld-aloj"></div>Alojamiento</div>
+  <div class="ley"><div class="ley-dot ld-evento"></div>Evento</div>
+  <div class="ley"><div class="ley-dot ld-day"></div>DayPass</div>
+  <div class="ley"><div class="ley-dot ld-reel"></div>Reel</div>
+  <div class="ley"><div class="ley-dot ld-story"></div>Stories</div>
+  <div class="ley"><div class="ley-dot ld-libre"></div>Fecha libre</div>
+  <div class="ley"><div class="ley-dot ld-ss"></div>Sem. Santa / Especial</div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+  <!-- CALENDARIO -->
+  <div class="cal-wrap">
+    <div class="cal-grid" id="cal-headers">
+      <div class="cal-header-day">Lun</div>
+      <div class="cal-header-day">Mar</div>
+      <div class="cal-header-day">Mié</div>
+      <div class="cal-header-day">Jue</div>
+      <div class="cal-header-day">Vie</div>
+      <div class="cal-header-day">Sáb</div>
+      <div class="cal-header-day">Dom</div>
+    </div>
+    <div class="cal-grid" id="calendario"></div>
+  </div>
+
+  <!-- PANEL LATERAL -->
+  <div class="panel cerrado" id="panel">
+    <div class="panel-header">
+      <button class="panel-close" onclick="cerrarPanel()">✕</button>
+      <div class="ph-fecha" id="ph-fecha"></div>
+      <div class="ph-titulo" id="ph-titulo"></div>
+      <div class="ph-status" id="ph-status"></div>
+    </div>
+    <div class="tabs">
+      <div class="tab active" onclick="activarTab(this,'contenido')">Contenido</div>
+      <div class="tab" onclick="activarTab(this,'stories')">Stories</div>
+      <div class="tab" onclick="activarTab(this,'ads')">Ads</div>
+      <div class="tab" onclick="activarTab(this,'notas')">Notas</div>
+    </div>
+    <div class="panel-body">
+      <div class="tab-content active" id="tab-contenido"></div>
+      <div class="tab-content" id="tab-stories"></div>
+      <div class="tab-content" id="tab-ads"></div>
+      <div class="tab-content" id="tab-notas"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── DATOS FIJOS SIEMPRE ───
+const CTA_FIJO = `📍 Salamanca, Gto. · quintatabachin.com.mx
+📲 Mensajes únicamente: WA · FB · IG (no llamadas)
+wa.me/4641704249 · atom.bio/quinta-tabachin`;
+
+const SLOGAN = `"Una sola reserva al día. El espacio es solo tuyo."`;
+
+// ─── BASE DE DATOS DEL MES ───
+const PLAN = {
+  // ABRIL 2026
+  "2026-04-01": {
+    status: "ss", statusLabel: "Semana Santa",
+    piezas: [
+      { tipo: "doc", nombre: "Documentar SS", hora: "todo el día", badge: "pc-doc",
+        copy: { hook: "Documentar en silencio. No publicar.", cuerpo: "Capturar clips de 5-15 seg: alberca, jardín, naturaleza, ambiente. Sin caras sin permiso. Guardar en Drive 04_CONTENIDO_DIGITAL.", cta: "— Sin publicación hoy —", hashtags: "" },
+        nota: "Este material es el combustible de todo el mes de abril sin necesidad de nueva producción." }
+    ],
+    stories: ["① Clip ambiente mañana", "② Reposteo UGC inmediato si llega de cliente", "③ Poll silencioso: emoji slider"],
+    ads: []
+  },
+  "2026-04-02": {
+    status: "ss", statusLabel: "Semana Santa",
+    piezas: [
+      { tipo: "reel", nombre: "Post SS aspiracional", hora: "6pm", badge: "pc-reel",
+        copy: {
+          hook: "Algunos grupos llegaron el jueves. Se fueron el lunes. Y no quisieron salir en ningún momento.",
+          cuerpo: "Eso es lo que pasa cuando el espacio es completamente tuyo.\nSin itinerario. Sin hotel. Sin desconocidos al lado.\nSolo tu gente, la alberca y el tiempo que quieran quedarse.",
+          cierre: SLOGAN,
+          cta: `Semana Santa se fue — pero Pascua y abril siguen disponibles.\n\n` + CTA_FIJO,
+          hashtags: "#QuintaTabachin #SemanaSanta #Alojamiento #Salamanca #CasaDeCampo #Guanajuato"
+        },
+        nota: "Usar mejor foto o clip capturado durante SS. Si hay UGC de clientes con permiso, aún mejor." }
+    ],
+    stories: ["① Compartir post", "② Reposteo UGC si hay", "③ 'Pascua 6-8 abr disponible · escríbenos' CTA WA"],
+    ads: []
+  },
+  "2026-04-03": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "aloj", nombre: "Post venta Pascua · alojamiento", hora: "6pm", badge: "pc-aloj",
+        copy: {
+          hook: "Semana Santa terminó. Pero el descanso de verdad todavía puede ser tuyo.",
+          cuerpo: "Pascua es del 6 al 8 de abril. Tres días para tu grupo en la quinta completa.\nAlberca. Habitaciones. Jacuzzi. Fogatero. Todo sin compartir con nadie más.",
+          cierre: SLOGAN,
+          cta: `Desde $3,999 MXN · hasta 15 personas\n\n` + CTA_FIJO,
+          hashtags: "#QuintaTabachin #Pascua2026 #Alojamiento #Salamanca #CasaDeCampo #Guanajuato"
+        },
+        nota: "Publicar a las 6pm del viernes 3. Es el primer aviso de Pascua — exactamente 3 días antes del 6." }
+    ],
+    stories: ["① Compartir post", "② 'Pascua del 6 al 8 · hay lugar · escríbenos hoy' CTA WA", "③ Poll: '¿Ya tienes plan de Pascua?' Sí / Todavía no"],
+    ads: [{ nombre: "Activar: Campaña Pascua", fechas: "3–5 abr", presupuesto: "$400 MXN", det: "Mismo público que SS. Foto alberca + copy 'Pascua disponible 6-8 abr'. Objetivo: mensajes." }]
+  },
+  "2026-04-04": {
+    status: "ss", statusLabel: "SS - Documentar",
+    piezas: [
+      { tipo: "story", nombre: "Stories activas · refuerzo venta Pascua", hora: "tarde", badge: "pc-story",
+        copy: { hook: "", cuerpo: "Solo stories hoy. Reforzar el post de ayer.", cta: "— Ver stories abajo —", hashtags: "" },
+        nota: "No es necesario publicar post nuevo. El del viernes 3 sigue activo." }
+    ],
+    stories: ["① Clip del día · ambiente SS", "② 'Pascua en 2 días · queda lugar' CTA WA", "③ Reposteo UGC si hay cliente en la quinta"],
+    ads: []
+  },
+  "2026-04-05": {
+    status: "ss", statusLabel: "Semana Santa",
+    piezas: [
+      { tipo: "aloj", nombre: "Post cierre SS · UGC", hora: "5pm", badge: "pc-aloj",
+        copy: {
+          hook: "Así fue la semana que no querían que acabara.",
+          cuerpo: "Cuando el espacio es completamente tuyo, los planes se improvisan solos.\nLa alberca a medianoche. El desayuno sin prisa. El fogatero que nadie quería apagar.",
+          cierre: SLOGAN,
+          cta: `Pascua: 6, 7 y 8 de abril disponibles.\n\n` + CTA_FIJO,
+          hashtags: "#QuintaTabachin #SemanaSanta2026 #Alojamiento #Salamanca #Guanajuato #EspacioPrivado"
+        },
+        nota: "Usar el mejor clip/foto de SS. Si hay UGC con permiso, publicarlo como post. Este post activa el interés de Pascua." }
+    ],
+    stories: ["① Compartir post", "② 'Mañana Pascua disponible · último aviso' CTA WA", "③ Countdown stories a Pascua"],
+    ads: []
+  },
+  "2026-04-06": {
+    status: "disponible", statusLabel: "Libre · Pascua",
+    piezas: [
+      { tipo: "doc", nombre: "Pascua · documentar si hay reserva", hora: "todo el día", badge: "pc-doc",
+        copy: { hook: "", cuerpo: "Si hay reserva: capturar clips y pedir UGC al cliente. Si está vacío: content day propio.", cta: "— Sin publicación nueva —", hashtags: "" },
+        nota: "El lunes 7 es el día clave para publicar. Hoy solo documentar y repostear UGC." }
+    ],
+    stories: ["① Clip ambiente si hay reserva", "② Reposteo UGC inmediato", "③ Emoji slider: '¿Cómo va tu Pascua?'"],
+    ads: []
+  },
+  "2026-04-07": {
+    status: "disponible", statusLabel: "Libre · Lunes",
+    piezas: [
+      { tipo: "reel", nombre: "Reel pro · 'Imagina tener todo esto'", hora: "6pm (pico lunes)", badge: "pc-reel",
+        copy: {
+          hook: "¿Cuándo fue la última vez que tu grupo tuvo un espacio completamente para ustedes?",
+          cuerpo: "Sin extraños. Sin compartir la alberca. Sin toparse con nadie.\n\nEn Tabachín reservamos un solo grupo por día. La casa entera es tuya desde que llegas hasta que te vas.",
+          cierre: SLOGAN,
+          cta: `Alojamiento · DayPass · Eventos\nDesde $3,999 MXN / noche · hasta 15 personas\n\n` + CTA_FIJO,
+          hashtags: "#QuintaTabachin #Alojamiento #Salamanca #CasaDeCampo #AlbercaPrivada #EscapateLocal #Guanajuato"
+        },
+        nota: "Publicar a las 6pm exacto — pico de audiencia del lunes según tus métricas IG de febrero." }
+    ],
+    stories: ["① Compartir reel a stories", "② Encuesta: 'Con quién vendrías' pareja/familia/amigos/trabajo", "③ 'Este fin de semana disponible · escríbenos hoy' CTA WA"],
+    ads: [{ nombre: "Refuerzo Campaña Alojamiento", fechas: "7–14 abr", presupuesto: "$800 MXN", det: "Ampliar público: Salamanca + Irapuato + Celaya + León. Radio 40km. Mujeres 28-45. CPL objetivo <$10." }]
+  },
+  "2026-04-08": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "evento", nombre: "Post eventos · primer push mayo", hora: "6pm", badge: "pc-evento",
+        copy: {
+          hook: "Tu reunión merece un espacio así.",
+          cuerpo: "Nada de salones de hotel con olor a moqueta.\nNada de restaurantes donde tienen que hablar en voz baja.\n\nEn Tabachín tu evento tiene jardines, alberca, cocina exterior, salón privado y todo el espacio para que la gente se relaje de verdad — y eso cambia cómo se sienten las conversaciones.",
+          cierre: SLOGAN,
+          cta: `Cumpleaños · Reuniones de equipo · Cenas privadas · Celebraciones familiares\nDesde 30 personas. Mayo disponible.\n\n` + CTA_FIJO,
+          hashtags: "#QuintaTabachin #Eventos #SalonDeEventos #Salamanca #EventosPrivados #Guanajuato #ReunionesPrivadas"
+        },
+        nota: "Primera pieza de eventos del mes. Usar foto del salón + jardín. Si tienes foto de evento pasado con permiso, úsala." }
+    ],
+    stories: ["① Compartir post", "② 'Espacio disponible esta semana para DayPass' CTA WA", "③ Emoji slider: '¿Tu equipo necesita un retiro?'"],
+    ads: []
+  },
+  "2026-04-09": {
+    status: "disponible", statusLabel: "Libre · Domingo",
+    piezas: [
+      { tipo: "reel", nombre: "Reel still · alberca desde adentro", hora: "6pm (pico domingo)", badge: "pc-reel",
+        copy: {
+          hook: "Hay lugares que no necesitan explicación.",
+          cuerpo: "Solo entrar.\nRespirar diferente.\nY no querer salir.",
+          cierre: `Quinta Tabachín · Salamanca, Gto.\n` + SLOGAN,
+          cta: CTA_FIJO,
+          hashtags: "#QuintaTabachin #Salamanca #CasaDeCampo #AlbercaPrivada #Descanso #Guanajuato"
+        },
+        nota: "Reel still = toma fija con sonido ambiente del agua. Texto en pantalla: 'Hay lugares que no necesitan explicación.' Minimal, sin voz en off." }
+    ],
+    stories: ["① Compartir reel", "② Poll: '¿Fin de semana en QT?' Sí / Ya quiero / Pronto", "③ Clip jardín atardecer"],
+    ads: []
+  },
+  "2026-04-10": {
+    status: "disponible", statusLabel: "Disponible entre semana",
+    piezas: [
+      { tipo: "day", nombre: "Post DayPass · entre semana", hora: "3-6pm (pico miércoles)", badge: "pc-day",
+        copy: {
+          hook: "¿Por qué esperar al fin de semana para descansar de verdad?",
+          cuerpo: "De lunes a viernes, la quinta está disponible — y el silencio entre semana tiene algo que el fin de semana no puede darte.\n\nDayPass Exclusivo · 1pm a 8pm\nAlberca climatizada y techada · Jacuzzi · Fogatero · Cocina exterior · Asador · Billar · Futbolito · Jardines.\nTodo el espacio. Solo para tu grupo.",
+          cierre: SLOGAN,
+          cta: `Desde $3,900 MXN · hasta 15 personas\n\n` + CTA_FIJO,
+          hashtags: "#DayPass #Salamanca #QuintaTabachin #AlbercaPrivada #EntreSemanaDiferente #Guanajuato"
+        },
+        nota: "Post evergreen — funciona cualquier semana. Slide 1: mejor foto alberca con texto '¿Por qué esperar al fin de semana?' Slide final: precio + CTA." }
+    ],
+    stories: ["① Compartir post", "② 'Esta semana disponible · lunes a viernes' CTA WA", "③ FAQ: '¿Cuántas personas caben en DayPass?' (hasta 15 en horario normal, hasta 30 extendido)"],
+    ads: []
+  },
+  "2026-04-13": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "evento", nombre: "Reel still · Eventos mayo", hora: "6pm (pico lunes)", badge: "pc-evento",
+        copy: {
+          hook: "Mayo está disponible. Tu evento también puede ser aquí.",
+          cuerpo: "Salón privado, jardines, alberca y cocina exterior.\nUn espacio que hace que la gente quiera quedarse.\n\nNo hay extraños. No hay otros eventos el mismo día.\nSolo tu grupo y la quinta completa.",
+          cierre: SLOGAN,
+          cta: `Eventos desde 30 personas · Mayo disponible\n\n` + CTA_FIJO,
+          hashtags: "#QuintaTabachin #EventosMayo #Salamanca #SalonDeEventos #CelebrarDiferente #Guanajuato"
+        },
+        nota: "Usar foto del salón con iluminación o jardín preparado para evento. Si tienes foto de un evento pasado con permiso, es la mejor opción." }
+    ],
+    stories: ["① Compartir reel", "② 'Eventos en mayo · fechas abiertas' CTA WA", "③ Detrás de escena: el salón configurado"],
+    ads: [{ nombre: "Activar: Campaña Eventos Mayo", fechas: "13–20 abr", presupuesto: "$700 MXN", det: "Público: mujeres 30-50 + hombres 28-45. Intereses: organización de eventos, celebraciones. Salamanca + Irapuato. KPI: 10+ conversaciones de evento para mayo." }]
+  },
+  "2026-04-15": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "aloj", nombre: "Post prueba social · reseña real", hora: "3-6pm (pico miércoles)", badge: "pc-aloj",
+        copy: {
+          hook: "Lo que dice la gente que ya se quedó.",
+          cuerpo: "[Pegar aquí la captura de la reseña o comentario más reciente que mencione privacidad, exclusividad o la experiencia completa]\n\nEsto no lo decimos nosotros. Lo dice quien ya vivió una noche aquí.",
+          cierre: SLOGAN,
+          cta: CTA_FIJO,
+          hashtags: "#QuintaTabachin #Alojamiento #Reseñas #Salamanca #HospedajeExclusivo #Guanajuato"
+        },
+        nota: "Formato: imagen de la reseña en pantalla + foto del espacio mencionado. Elegir reseña que mencione privacidad, 'todo para nosotros' o el espacio completo." }
+    ],
+    stories: ["① Compartir post", "② DayPass entre semana disponible CTA WA", "③ FAQ: '¿Se puede llevar música externa?' (sí, dentro del horario permitido)"],
+    ads: []
+  },
+  "2026-04-16": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "reel", nombre: "Reel pro · Noche en Tabachín", hora: "7pm", badge: "pc-reel",
+        copy: {
+          hook: "Hay noches que merecen más que una cama de hotel.",
+          cuerpo: "Fogatero encendido. Copas en el jardín.\nEl jacuzzi con el cielo de fondo.\nY mañana, el desayuno sin prisa.\n\nAsí son las noches en Quinta Tabachín.",
+          cierre: `Alojamiento privado · Desde $3,999 MXN\n` + SLOGAN,
+          cta: CTA_FIJO,
+          hashtags: "#AlojamientoPrivado #Salamanca #QuintaTabachin #NochesDeCampo #Guanajuato #Escapada"
+        },
+        nota: "Clips nocturnos: fogatero, luces de ambiente, jacuzzi, jardín iluminado. Música instrumental cálida. Edición lenta. 20-30 seg." }
+    ],
+    stories: ["① Compartir reel", "② 'Fin de semana 19-20 disponible · escríbenos hoy' CTA WA — 3 días antes", "③ Detrás del reel"],
+    ads: []
+  },
+  "2026-04-18": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "evento", nombre: "Post eventos corporativos", hora: "10am", badge: "pc-evento",
+        copy: {
+          hook: "Tu equipo también necesita desconectarse.",
+          cuerpo: "Un retiro diferente. Sin sala de juntas. Sin pantallas obligatorias.\n\nEn Tabachín tu equipo tiene espacio para pensar diferente — jardines, alberca, cocina exterior y una propiedad completa donde nadie los interrumpe.\n\nIdeal para equipos de hasta 15 personas. Salón disponible para grupos mayores.",
+          cierre: SLOGAN,
+          cta: `Retiros · Juntas de planeación · Team building\nMayo disponible\n\n` + CTA_FIJO,
+          hashtags: "#QuintaTabachin #EventosCorporativos #TeamBuilding #Salamanca #RetiroDeEquipo #Guanajuato"
+        },
+        nota: "Sábado no es pico de audiencia. Publicar a las 10am o 11am para aprovechar el tráfico de fin de semana." }
+    ],
+    stories: ["① Compartir post", "② Emoji slider: '¿Tu equipo necesita un retiro?'", "③ Clip salón configurado o jardín amplio"],
+    ads: []
+  },
+  "2026-04-20": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "reel", nombre: "Reel still · Mañana en la quinta", hora: "6pm (pico lunes)", badge: "pc-reel",
+        copy: {
+          hook: "Te despiertas. Abres el balcón. El jardín ya te está esperando.",
+          cuerpo: "Sin prisa. Sin agenda.\nSolo tu grupo y el tiempo que quieran quedarse.",
+          cierre: `Quinta Tabachín · Alojamiento · Salamanca, Gto.\n` + SLOGAN,
+          cta: CTA_FIJO,
+          hashtags: "#QuintaTabachin #MañanaDeCampo #Salamanca #AlojamientoPrivado #Guanajuato #Descanso"
+        },
+        nota: "Toma matutina desde el balcón de la habitación o del jardín. Luz natural de mañana. Audio ambiente. Muy poco texto en pantalla." }
+    ],
+    stories: ["① Compartir reel", "② Caja preguntas: '¿Qué harías primero al llegar a QT?'", "③ DayPass entre semana disponible CTA WA"],
+    ads: []
+  },
+  "2026-04-21": {
+    status: "disponible", statusLabel: "Disponible entre semana",
+    piezas: [
+      { tipo: "day", nombre: "Post DayPass · martes en la alberca", hora: "12pm", badge: "pc-day",
+        copy: {
+          hook: "Martes en la alberca. ¿Por qué no?",
+          cuerpo: "Entre semana la quinta tiene algo especial: está más tranquila, más privada, más tuya.\n\nDayPass de 1pm a 8pm. Alberca climatizada, jacuzzi, cocina exterior, billar y todo el espacio para tu grupo.",
+          cierre: SLOGAN,
+          cta: `Desde $3,900 MXN · hasta 15 personas\nDisponible lunes a viernes\n\n` + CTA_FIJO,
+          hashtags: "#DayPass #Salamanca #QuintaTabachin #MartesEnLaAlberca #EntreSemanaDiferente #Guanajuato"
+        },
+        nota: "Foto de alberca entre semana, sin gente o con poca gente. La quietud es el mensaje." }
+    ],
+    stories: ["① Compartir post", "② DayPass disponible esta semana CTA WA", "③ Responder preguntas de la caja abierta del lunes"],
+    ads: []
+  },
+  "2026-04-22": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "aloj", nombre: "Post familias · Día del Niño preview", hora: "3-6pm (pico miércoles)", badge: "pc-aloj",
+        copy: {
+          hook: "El Día del Niño que sí van a recordar — y que también vas a disfrutar tú.",
+          cuerpo: "Ellos: alberca, futbolito, billar, jardines para correr y una fogata para terminar el día.\nTú: sin organizar nada extra, sin coordinar con otros papás, sin salir del espacio.\n\nLa quinta entera es de tu familia desde que llegan hasta que se van.",
+          cierre: SLOGAN,
+          cta: `30 de abril disponible · Una sola reserva · el espacio completo es tuyo\nDesde $3,999 MXN · hasta 15 personas\n\n` + CTA_FIJO,
+          hashtags: "#DiadelNino #QuintaTabachin #Salamanca #FamiliaQT #AlbercaPrivada #Guanajuato #30DeAbril"
+        },
+        nota: "Si tienes fotos con niños y familias (con permiso explícito), este es el momento. Si no, fotos de alberca y jardín — el texto hace el trabajo." }
+    ],
+    stories: ["① Compartir post", "② '30 abril Día del Niño · hay lugar · escríbenos hoy' CTA WA", "③ Poll: '¿Cuántos niños vendrían?' 1-3 / 4-6 / más de 6"],
+    ads: [{ nombre: "Activar: Campaña Día del Niño + Preventa mayo", fechas: "22–30 abr", presupuesto: "$800 MXN", det: "Público: familias con hijos, Salamanca + Irapuato + Celaya, mujeres 28-42. KPI: 30 abr vendido + 15+ leads mayo." }]
+  },
+  "2026-04-23": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "reel", nombre: "Reel pro · Tour completo de la quinta", hora: "7pm", badge: "pc-reel",
+        copy: {
+          hook: "Todo esto. Una sola reserva. Un solo grupo.",
+          cuerpo: "Alberca · Jacuzzi · Habitaciones · Juegos · Fogatero · Jardines · Cocina exterior.\n\nDesde que llegan hasta que se van — sin compartir con nadie más.",
+          cierre: SLOGAN,
+          cta: CTA_FIJO,
+          hashtags: "#QuintaTabachin #Salamanca #CasaDeCampo #EspacioPrivado #Alojamiento #Guanajuato #TourVirtual"
+        },
+        nota: "Recorrido visual de todas las áreas en 30-45 seg. Transiciones suaves. Música cálida. Es el reel de mayor alcance potencial del mes — invertir en la edición." }
+    ],
+    stories: ["① Compartir reel", "② 'Este fin 25-26 disponible · escríbenos hoy' CTA WA — 2 días antes", "③ Detrás de cámara del reel"],
+    ads: []
+  },
+  "2026-04-26": {
+    status: "disponible", statusLabel: "Disponible",
+    piezas: [
+      { tipo: "aloj", nombre: "Post cierre de mes · preventa mayo", hora: "6pm (pico domingo)", badge: "pc-aloj",
+        copy: {
+          hook: "Abril fue así. Mayo también puede serlo.",
+          cuerpo: "Días largos. Agua fría. Las noches que no quieres que terminen.\nTodo eso sigue aquí — y mayo tiene fechas disponibles.",
+          cierre: SLOGAN,
+          cta: `Mayo disponible · Aparta tu fecha hoy\n\n` + CTA_FIJO,
+          hashtags: "#QuintaTabachin #Salamanca #Mayo2026 #CasaDeCampo #AlojamientoPrivado #Guanajuato #Escapada"
+        },
+        nota: "Foto atmosférica de lo mejor del mes. Breve, poético. El objetivo es cerrar abril y abrir mayo." }
+    ],
+    stories: ["① Compartir post", "② 'Mayo disponible · aparta tu fecha' CTA WA", "③ Poll: '¿Cuándo vienes en mayo?' Este mes / Pronto / Ya lo estoy pensando"],
+    ads: []
+  }
+};
+
+// ─── ESTADO ───
+let mesActual = new Date(2026, 3, 1); // Abril 2026
+let diaSeleccionado = null;
+
+// ─── NOMBRES ───
+const MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const TYPE_LABELS = { aloj:"Alojamiento", evento:"Evento", day:"DayPass", reel:"Reel", story:"Story", doc:"Documentar", ad:"Campaña" };
+const TYPE_COLORS = { aloj:"#3B6D11", evento:"#7a3a1a", day:"#2d6020", reel:"#854F0B", story:"#1a2e5a", doc:"#6a6a6a", ad:"#7a4a10" };
+
+function keyFecha(y,m,d) { return `${y}-${String(m+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; }
+
+function renderCalendario() {
+  const cal = document.getElementById('calendario');
+  cal.innerHTML = '';
+  document.getElementById('mes-titulo').textContent = `${MESES[mesActual.getMonth()]} ${mesActual.getFullYear()}`;
+
+  const year = mesActual.getFullYear();
+  const month = mesActual.getMonth();
+  const primerDia = new Date(year, month, 1).getDay();
+  const offset = primerDia === 0 ? 6 : primerDia - 1;
+  const diasMes = new Date(year, month + 1, 0).getDate();
+  const hoy = new Date();
+
+  for (let i = 0; i < offset; i++) {
+    const vacio = document.createElement('div');
+    vacio.className = 'dia vacio';
+    cal.appendChild(vacio);
+  }
+
+  for (let d = 1; d <= diasMes; d++) {
+    const key = keyFecha(year, month, d);
+    const data = PLAN[key];
+    const div = document.createElement('div');
+    let cls = 'dia';
+    if (data) cls += ' ' + (data.status || 'disponible');
+    if (d === hoy.getDate() && month === hoy.getMonth() && year === hoy.getFullYear()) cls += ' hoy';
+    if (diaSeleccionado === key) cls += ' selected';
+    div.className = cls;
+
+    let statusBadge = '';
+    if (data) {
+      const sc = data.status === 'disponible' ? 'st-libre' : data.status === 'ss' ? 'st-ss' : 'st-ocupado';
+      statusBadge = `<div class="dia-status ${sc}">${data.statusLabel || ''}</div>`;
+    }
+
+    let piezasHtml = '';
+    if (data && data.piezas) {
+      const visible = data.piezas.slice(0, 2);
+      visible.forEach(p => {
+        piezasHtml += `<div class="pieza-chip ${p.badge}" style="border-left:2px solid ${TYPE_COLORS[p.tipo]||'#888'}">${TYPE_LABELS[p.tipo]||''}: ${p.nombre}</div>`;
+      });
+      if (data.piezas.length > 2) {
+        piezasHtml += `<div class="dia-mas">+${data.piezas.length - 2} más</div>`;
+      }
+      if (data.stories && data.stories.length) {
+        piezasHtml += `<div class="pieza-chip pc-story">📖 ${data.stories.length} stories</div>`;
+      }
+    }
+
+    div.innerHTML = `
+      <div class="dia-header">
+        <div class="dia-num">${d}</div>
+        ${statusBadge}
+      </div>
+      <div class="dia-piezas">${piezasHtml}</div>`;
+
+    if (data) div.onclick = () => abrirPanel(key, d, data);
+    cal.appendChild(div);
+  }
+}
+
+function abrirPanel(key, dia, data) {
+  diaSeleccionado = key;
+  renderCalendario();
+
+  const panel = document.getElementById('panel');
+  panel.classList.remove('cerrado');
+
+  const [year, month] = key.split('-').map(Number);
+  document.getElementById('ph-fecha').textContent = `${MESES[month-1]} ${year}`;
+  document.getElementById('ph-titulo').textContent = `${['Lunes','Martes','Miércoles','Jueves','Viernes','Sábado','Domingo'][new Date(year,month-1,dia).getDay() === 0 ? 6 : new Date(year,month-1,dia).getDay()-1]}, ${dia} de ${MESES[month-1]}`;
+  document.getElementById('ph-status').textContent = data.statusLabel || '';
+
+  // TAB CONTENIDO
+  let contenidoHtml = `<div class="cta-fijo"><div class="cf-titulo">Elementos fijos en todo post</div><div class="cf-line"><strong>Web:</strong> quintatabachin.com.mx<br><strong>Contacto:</strong> Solo mensajes · WA · FB · IG · No llamadas<br><strong>WA:</strong> wa.me/4641704249<br><strong>Slogan:</strong> "Una sola reserva al día. El espacio es solo tuyo."</div></div>`;
+
+  if (data.piezas && data.piezas.length) {
+    data.piezas.forEach((p, i) => {
+      const c = p.copy || {};
+      const fullCopy = [
+        c.hook ? c.hook : '',
+        c.cuerpo ? '\n' + c.cuerpo : '',
+        c.cierre ? '\n\n' + c.cierre : '',
+        c.cta ? '\n\n' + c.cta : '',
+        c.hashtags ? '\n\n' + c.hashtags : ''
+      ].filter(Boolean).join('');
+
+      contenidoHtml += `
+        <div class="pieza-bloque">
+          <div class="pb-header" onclick="toggleBloque(this)">
+            <span class="pb-tipo-badge pc-${p.tipo}" style="background:${TYPE_COLORS[p.tipo]||'#888'}22;color:${TYPE_COLORS[p.tipo]||'#888'}">${TYPE_LABELS[p.tipo]||p.tipo}</span>
+            <span class="pb-nombre">${p.nombre}</span>
+            <span class="pb-hora">${p.hora}</span>
+            <span class="pb-arrow">▼</span>
+          </div>
+          <div class="pb-body">
+            ${c.hook ? `<div class="copy-seccion"><div class="cs-label">Hook</div><div class="cs-texto hook">${c.hook}</div></div>` : ''}
+            ${c.cuerpo ? `<div class="copy-seccion"><div class="cs-label">Cuerpo</div><div class="cs-texto">${c.cuerpo}</div></div>` : ''}
+            ${c.cierre ? `<div class="copy-seccion"><div class="cs-label">Cierre · Slogan</div><div class="cs-texto">${c.cierre}</div></div>` : ''}
+            ${c.cta ? `<div class="copy-seccion"><div class="cs-label">CTA + Contacto</div><div class="cs-texto cta-box">${c.cta}</div></div>` : ''}
+            ${c.hashtags ? `<div class="copy-seccion"><div class="cs-label">Hashtags</div><div class="cs-texto">${c.hashtags}</div></div>` : ''}
+            <div class="copy-seccion"><div class="cs-label">Copy completo · listo para pegar</div><div class="copy-full" id="copy-full-${i}">${fullCopy}</div></div>
+            <button class="btn-copy" onclick="copiarTexto('copy-full-${i}', this)">📋 Copiar copy completo</button>
+          </div>
+        </div>`;
+    });
+  } else {
+    contenidoHtml += `<div class="empty-state"><div class="es-icon">📅</div><div class="es-text">Sin publicaciones programadas para este día.</div></div>`;
+  }
+  document.getElementById('tab-contenido').innerHTML = contenidoHtml;
+
+  // TAB STORIES
+  let storiesHtml = '';
+  if (data.stories && data.stories.length) {
+    storiesHtml += `<div class="nota-diseno"><strong>Regla de oro:</strong> Máx 2 stories de venta consecutivas. Si ayer fue venta, hoy es comunidad. Reposteo UGC siempre inmediato.</div>`;
+    data.stories.forEach((s, i) => {
+      storiesHtml += `<div class="story-item"><div class="si-num">Story ${i+1}</div><div class="si-texto">${s}</div></div>`;
+    });
+    storiesHtml += `<div class="nota-diseno" style="margin-top:12px"><strong>Horario sugerido:</strong> Primera story entre 9–10am. Engagement (encuestas) en la tarde 3–6pm. Venta suave en la noche 7–9pm si aplica.</div>`;
+  } else {
+    storiesHtml = `<div class="empty-state"><div class="es-icon">📖</div><div class="es-text">Sin stories específicas para este día.<br>Publicar contenido de comunidad o repostear UGC si llega.</div></div>`;
+  }
+  document.getElementById('tab-stories').innerHTML = storiesHtml;
+
+  // TAB ADS
+  let adsHtml = '';
+  if (data.ads && data.ads.length) {
+    data.ads.forEach(a => {
+      adsHtml += `<div class="ad-bloque"><div class="ab-nombre">${a.nombre}</div><div class="ab-fechas">${a.fechas}</div><div class="ab-det">${a.det}</div><span class="ab-budget">${a.presupuesto}</span></div>`;
+    });
+  } else {
+    adsHtml = `<div class="empty-state"><div class="es-icon">📣</div><div class="es-text">Sin campaña activa este día.<br>Revisar si hay campaña en curso desde días anteriores.</div></div>`;
+  }
+  document.getElementById('tab-ads').innerHTML = adsHtml;
+
+  // TAB NOTAS
+  let notasHtml = '';
+  if (data.piezas) {
+    data.piezas.forEach(p => {
+      if (p.nota) notasHtml += `<div class="nota-diseno"><strong>${p.nombre}:</strong><br>${p.nota}</div>`;
+    });
+  }
+  notasHtml += `<div class="nota-diseno"><strong>Recordatorio general:</strong><br>• Nunca vender el mismo día de la fecha disponible — mínimo 3 días antes<br>• Reposteo de UGC siempre inmediato cuando llega<br>• Horarios pico IG: Lun 6–9pm · Mié 3–6pm · Dom 6–9pm<br>• No aceptamos llamadas — solo mensajes WA, FB, IG</div>`;
+  document.getElementById('tab-notas').innerHTML = notasHtml;
+
+  // Activar primera tab
+  activarTab(document.querySelector('.tab.active') || document.querySelector('.tab'), 'contenido');
+}
+
+function cerrarPanel() {
+  diaSeleccionado = null;
+  document.getElementById('panel').classList.add('cerrado');
+  renderCalendario();
+}
+
+function activarTab(el, id) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-' + id).classList.add('active');
+}
+
+function toggleBloque(header) {
+  const body = header.nextElementSibling;
+  const arrow = header.querySelector('.pb-arrow');
+  const isOpen = body.classList.contains('open');
+  document.querySelectorAll('.pb-body').forEach(b => b.classList.remove('open'));
+  document.querySelectorAll('.pb-arrow').forEach(a => { a.classList.remove('open'); });
+  if (!isOpen) { body.classList.add('open'); arrow.classList.add('open'); }
+}
+
+function copiarTexto(id, btn) {
+  const el = document.getElementById(id);
+  navigator.clipboard.writeText(el.textContent).then(() => {
+    btn.textContent = '✅ Copiado';
+    btn.classList.add('copied');
+    setTimeout(() => { btn.textContent = '📋 Copiar copy completo'; btn.classList.remove('copied'); }, 2000);
+  });
+}
+
+function cambiarMes(dir) {
+  mesActual.setMonth(mesActual.getMonth() + dir);
+  diaSeleccionado = null;
+  document.getElementById('panel').classList.add('cerrado');
+  renderCalendario();
+}
+
+renderCalendario();
+</script>
+</body>
+</html>
