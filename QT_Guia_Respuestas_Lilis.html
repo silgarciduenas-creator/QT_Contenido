@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guía de Respuestas · Lilis · Quinta Tabachín</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --verde:#1e3220; --verde-m:#2d4a2d; --verde-l:#537056;
+  --dorado:#c9a84c; --dorado-l:#e8d48a;
+  --crema:#f5f0e8; --arena:#becbbf;
+  --texto:#1a2e1a; --gris:#7a8e7a; --blanco:#ffffff;
+  --rojo:#8a2a2a; --azul:#1a3a6a; --naranja:#7a4a1a;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{font-family:'Jost',sans-serif;background:var(--crema);color:var(--texto);font-size:13px;}
+
+/* HEADER */
+.header{background:var(--verde);padding:32px 28px 24px;position:relative;overflow:hidden;}
+.header::after{content:'';position:absolute;bottom:-40px;right:-40px;width:200px;height:200px;border:1px solid rgba(201,168,76,.1);border-radius:50%;}
+.hdr-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+.brand{font-family:'Cormorant Garamond',serif;color:var(--dorado);font-size:20px;font-style:italic;font-weight:300;}
+.version{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--arena);}
+.hdr-title{font-family:'Cormorant Garamond',serif;color:var(--crema);font-size:32px;font-weight:300;line-height:1.1;margin-bottom:10px;}
+.hdr-title em{color:var(--dorado);font-style:italic;}
+.hdr-sub{font-size:12px;color:var(--arena);font-weight:300;line-height:1.6;max-width:560px;}
+
+/* RECURSOS RÁPIDOS */
+.recursos{background:var(--verde-m);padding:12px 28px;display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.rec-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--arena);margin-right:4px;font-weight:500;}
+.rec-btn{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:var(--crema);padding:6px 12px;border-radius:3px;font-size:11px;font-weight:500;text-decoration:none;transition:background .2s;white-space:nowrap;}
+.rec-btn:hover{background:rgba(255,255,255,.22);}
+.rec-btn .ico{font-size:13px;}
+.rec-btn.dorado{background:rgba(201,168,76,.2);border-color:rgba(201,168,76,.4);color:var(--dorado-l);}
+.rec-btn.dorado:hover{background:rgba(201,168,76,.35);}
+
+/* REGLA CRÍTICA */
+.regla-critica{background:var(--dorado);padding:10px 28px;display:flex;align-items:center;gap:10px;}
+.rc-ico{font-size:16px;}
+.rc-txt{font-size:11px;font-weight:500;color:var(--verde);line-height:1.5;}
+
+/* LAYOUT */
+.layout{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 200px);}
+
+/* SIDEBAR */
+.sidebar{background:var(--blanco);border-right:1px solid #dde8dd;padding:16px 0;position:sticky;top:0;height:100vh;overflow-y:auto;}
+.sb-section{margin-bottom:6px;}
+.sb-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gris);padding:10px 16px 4px;font-weight:500;display:block;}
+.sb-item{display:flex;align-items:center;gap:8px;padding:8px 16px;cursor:pointer;transition:background .15s;border-left:3px solid transparent;}
+.sb-item:hover{background:#f5f8f5;}
+.sb-item.active{background:#f0f8f0;border-left-color:var(--dorado);color:var(--verde-m);}
+.sb-item .sb-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0;}
+.sb-item .sb-nombre{font-size:12px;font-weight:400;color:var(--texto);}
+.sb-item.active .sb-nombre{font-weight:500;color:var(--verde-m);}
+.dot-info{background:#3a6aa0;}
+.dot-coti{background:var(--verde-l);}
+.dot-reserva{background:var(--verde-m);}
+.dot-evento{background:var(--naranja);}
+.dot-cancel{background:var(--rojo);}
+.dot-queja{background:#7a2a2a;}
+.dot-foto{background:#5a3a7a;}
+.dot-tc{background:var(--dorado);}
+.dot-temp{background:#c07820;}
+.dot-escalar{background:var(--rojo);}
+
+/* CONTENIDO */
+.content{padding:24px 28px;overflow-y:auto;}
+.bloque{display:none;}
+.bloque.active{display:block;}
+
+/* ENCABEZADO DE BLOQUE */
+.bloque-header{display:flex;align-items:flex-start;gap:14px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #dde8dd;}
+.bh-color{width:6px;border-radius:3px;flex-shrink:0;align-self:stretch;min-height:40px;}
+.bh-info{}
+.bh-tipo{font-size:9px;letter-spacing:2px;text-transform:uppercase;font-weight:500;margin-bottom:4px;}
+.bh-titulo{font-family:'Cormorant Garamond',serif;font-size:26px;font-weight:300;color:var(--verde-m);line-height:1.1;}
+.bh-desc{font-size:12px;color:var(--gris);margin-top:4px;font-weight:300;line-height:1.6;}
+
+/* FLUJO DE PASOS */
+.flujo{display:flex;flex-direction:column;gap:0;margin-bottom:20px;}
+.paso{display:flex;gap:14px;position:relative;}
+.paso:not(:last-child)::before{content:'';position:absolute;left:15px;top:36px;bottom:0;width:1px;background:#dde8dd;z-index:0;}
+.paso-num{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;flex-shrink:0;z-index:1;margin-top:2px;}
+.paso-body{flex:1;padding-bottom:20px;}
+.paso-titulo{font-size:13px;font-weight:500;color:var(--texto);margin-bottom:5px;}
+.paso-desc{font-size:12px;color:#4a5e4a;line-height:1.75;font-weight:300;}
+.paso-desc strong{color:var(--verde-m);font-weight:500;}
+
+/* MENSAJES COPY */
+.msg-box{background:#f0f5f0;border:1px solid #cce0cc;border-left:3px solid var(--verde-l);border-radius:4px;padding:13px 15px;margin:10px 0;font-size:12px;line-height:1.85;color:var(--texto);font-weight:300;white-space:pre-wrap;position:relative;}
+.msg-label{font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--verde-l);font-weight:500;margin-bottom:6px;display:block;}
+.btn-copy{background:var(--verde-m);color:var(--crema);border:none;padding:5px 12px;font-family:'Jost',sans-serif;font-size:10px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;border-radius:2px;position:absolute;top:10px;right:10px;transition:all .15s;}
+.btn-copy:hover{background:var(--verde);}
+.btn-copy.ok{background:#3B6D11;}
+
+/* ALERTAS */
+.alerta{border-radius:4px;padding:11px 14px;margin:10px 0;font-size:11px;line-height:1.7;}
+.alerta strong{font-weight:500;}
+.a-warning{background:#fdf8e0;border:1px solid #e0c860;color:#7a5a10;}
+.a-danger{background:#fdf0f0;border:1px solid #e0a0a0;color:var(--rojo);}
+.a-info{background:#e8f0f8;border:1px solid #9ab8d8;color:var(--azul);}
+.a-success{background:#e8f5e8;border:1px solid #90c890;color:#1a5a1a;}
+
+/* T&C TABLA */
+.tc-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.tc-card{background:var(--blanco);border:1px solid #dde8dd;border-radius:6px;padding:14px 16px;border-top:3px solid;}
+.tc-card h4{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;margin-bottom:8px;}
+.tc-card ul{list-style:none;padding:0;}
+.tc-card li{font-size:11px;color:var(--texto);line-height:1.8;font-weight:300;padding-left:12px;position:relative;}
+.tc-card li::before{content:'·';position:absolute;left:0;color:var(--dorado);}
+.tc-card li strong{font-weight:500;color:var(--verde-m);}
+
+/* TEMPORADAS */
+.temp-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px;}
+.temp-card{border-radius:6px;padding:14px 16px;}
+.temp-alta{background:var(--verde-m);}
+.temp-baja{background:#f5f8f5;border:1px solid #dde8dd;}
+.temp-card h4{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;font-weight:500;margin-bottom:10px;}
+.temp-alta h4{color:var(--dorado);}
+.temp-baja h4{color:var(--gris);}
+.temp-item{font-size:11px;line-height:1.8;padding:5px 0;border-bottom:1px solid rgba(255,255,255,.08);}
+.temp-alta .temp-item{color:var(--arena);}
+.temp-baja .temp-item{color:var(--texto);border-color:#eee;}
+.temp-item:last-child{border:none;}
+.temp-item strong{font-weight:500;}
+.temp-alta .temp-item strong{color:var(--crema);}
+
+/* ESCALACION */
+.esc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px;}
+.esc-card{background:var(--verde-m);border-radius:6px;padding:14px 16px;text-align:center;}
+.esc-rol{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--arena);margin-bottom:6px;}
+.esc-nombre{font-size:15px;font-weight:500;color:var(--crema);margin-bottom:4px;}
+.esc-contacto{font-size:11px;color:var(--dorado);}
+.esc-cuando{font-size:10px;color:var(--arena);margin-top:6px;font-style:italic;line-height:1.5;}
+
+/* DIVIDER */
+.divider{height:1px;background:#eee;margin:18px 0;}
+.sec-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--dorado);font-weight:500;margin-bottom:12px;display:block;}
+
+/* FOOTER */
+.footer{background:var(--verde);padding:14px 28px;display:flex;justify-content:space-between;align-items:center;}
+.footer-m{font-family:'Cormorant Garamond',serif;color:var(--dorado);font-size:14px;font-style:italic;}
+.footer-v{font-size:10px;color:var(--arena);letter-spacing:1px;}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="header">
+  <div class="hdr-top">
+    <div class="brand">Quinta Tabachín</div>
+    <div class="version">Guía CM · Lilis · Abril 2026</div>
+  </div>
+  <div class="hdr-title">Guía de <em>Respuestas</em></div>
+  <div class="hdr-sub">Todo lo que necesitas para atender mensajes de FB, IG y WhatsApp. Selecciona el tipo de mensaje en el menú y sigue los pasos. Los textos están listos para copiar y pegar.</div>
+</div>
+
+<!-- RECURSOS RÁPIDOS -->
+<div class="recursos">
+  <span class="rec-label">Recursos</span>
+  <a class="rec-btn dorado" href="https://docs.google.com/document/d/1YzprOk3Fe-farbCpqLcY7INeZaTMtUEm/edit?usp=sharing" target="_blank"><span class="ico">💬</span> Banco de mensajes</a>
+  <a class="rec-btn dorado" href="https://docs.google.com/spreadsheets/d/1Y3i_aPmN2scsV3TTlxn3mOG9os8bfg5L2wKVxjbDj6s/edit?usp=sharing" target="_blank"><span class="ico">💰</span> Tarifas 2026</a>
+  <a class="rec-btn dorado" href="https://tinyurl.com/DispTabachin" target="_blank"><span class="ico">📅</span> Disponibilidad</a>
+  <a class="rec-btn" href="https://wa.me/4641704249" target="_blank"><span class="ico">📲</span> WA Wendy</a>
+  <a class="rec-btn" href="https://www.instagram.com/tabachinquinta" target="_blank"><span class="ico">📸</span> IG @TabachinQuinta</a>
+  <a class="rec-btn" href="https://quintatabachin.com.mx" target="_blank"><span class="ico">🌐</span> Sitio web</a>
+</div>
+
+<!-- REGLA CRÍTICA -->
+<div class="regla-critica">
+  <div class="rc-ico">⚡</div>
+  <div class="rc-txt">Responder en máximo 4 horas (Lun–Sáb, 9am–5pm) · Solo mensajes: WA, FB, IG · No aceptamos llamadas · Si quiere reservar → escalar a Wendy</div>
+</div>
+
+<!-- LAYOUT PRINCIPAL -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sb-section">
+      <span class="sb-label">Por tipo de mensaje</span>
+      <div class="sb-item active" onclick="mostrar('info',this)">
+        <div class="sb-dot dot-info"></div><span class="sb-nombre">Pide información general</span>
+      </div>
+      <div class="sb-item" onclick="mostrar('coti',this)">
+        <div class="sb-dot dot-coti"></div><span class="sb-nombre">Pide cotización</span>
+      </div>
+      <div class="sb-item" onclick="mostrar('reserva',this)">
+        <div class="sb-dot dot-reserva"></div><span class="sb-nombre">Quiere reservar</span>
+      </div>
+      <div class="sb-item" onclick="mostrar('evento',this)">
+        <div class="sb-dot dot-evento"></div><span class="sb-nombre">Pregunta por evento</span>
+      </div>
+      <div class="sb-item" onclick="mostrar('cancel',this)">
+        <div class="sb-dot dot-cancel"></div><span class="sb-nombre">Quiere cancelar</span>
+      </div>
+      <div class="sb-item" onclick="mostrar('queja',this)">
+        <div class="sb-dot dot-queja"></div><span class="sb-nombre">Queja o problema</span>
+      </div>
+      <div class="sb-item" onclick="mostrar('foto',this)">
+        <div class="sb-dot dot-foto"></div><span class="sb-nombre">Sesión de fotos / video</span>
+      </div>
+    </div>
+    <div class="sb-section">
+      <span class="sb-label">Referencia rápida</span>
+      <div class="sb-item" onclick="mostrar('tc',this)">
+        <div class="sb-dot dot-tc"></div><span class="sb-nombre">Resumen T&C</span>
+      </div>
+      <div class="sb-item" onclick="mostrar('temp',this)">
+        <div class="sb-dot dot-temp"></div><span class="sb-nombre">Temporadas 2026</span>
+      </div>
+      <div class="sb-item" onclick="mostrar('escalar',this)">
+        <div class="sb-dot dot-escalar"></div><span class="sb-nombre">¿Cuándo escalar?</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTENIDO -->
+  <div class="content">
+
+    <!-- ═══════════ INFORMACIÓN GENERAL ═══════════ -->
+    <div class="bloque active" id="bloque-info">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:#3a6aa0"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:#3a6aa0">Tipo de mensaje</div>
+          <div class="bh-titulo">Pide información general</div>
+          <div class="bh-desc">Preguntan qué es QT, qué incluye, horarios, ubicación o cómo funciona. Aún no piden precio ni fecha.</div>
+        </div>
+      </div>
+
+      <span class="sec-label">Respuesta inicial · siempre pedir los 3 datos</span>
+      <div class="msg-box">
+        <span class="msg-label">Mensaje de bienvenida + preguntas clave</span>
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Hola [nombre]! 🌿 Bienvenido/a.
+
+Quinta Tabachín es una propiedad privada en Salamanca, Gto. Tenemos una sola reserva por día — el espacio completo es tuyo y de tu grupo.
+
+Para darte toda la información, necesito saber:
+
+1. ¿Qué modalidad te interesa?
+   · Alojamiento (3pm a 11am del día siguiente)
+   · DayPass (1pm a 8pm, sin quedarse a dormir)
+   · Evento o celebración (desde 30 personas)
+
+2. ¿Para cuántas personas sería?
+
+3. ¿Para qué fecha estás pensando?
+
+Con eso te confirmo disponibilidad y te doy los detalles completos 😊
+
+🌐 quintatabachin.com.mx</div>
+
+      <div class="divider"></div>
+      <span class="sec-label">Si pregunta la ubicación</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+Estamos en Calle Mármol 209, San Juan de Razos, Salamanca, Gto. 📍
+
+A solo 5 minutos del centro de Salamanca.
+
+Te comparto el pin de ubicación: [enviar pin de Google Maps]
+
+¿Tienes alguna otra duda? Con gusto te ayudo 😊
+
+🌐 quintatabachin.com.mx</div>
+
+      <div class="divider"></div>
+      <span class="sec-label">Si preguntan si se puede llevar mascota</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Hola! Las mascotas son bienvenidas en áreas exteriores 🐾 
+
+Te pedimos que no ingresen a las habitaciones ni al área de alberca por higiene de todos los huéspedes.
+
+¿Tienes alguna otra pregunta sobre la visita? 😊</div>
+
+      <div class="alerta a-info">
+        <strong>Recuerda:</strong> Siempre termina con una pregunta de cierre. El objetivo de cada respuesta es acercarte al siguiente paso: cotización o disponibilidad.
+      </div>
+    </div>
+
+    <!-- ═══════════ COTIZACIÓN ═══════════ -->
+    <div class="bloque" id="bloque-coti">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:var(--verde-l)"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:var(--verde-l)">Tipo de mensaje</div>
+          <div class="bh-titulo">Pide cotización o precio</div>
+          <div class="bh-desc">Preguntan cuánto cuesta. Necesitas los 3 datos antes de cotizar: modalidad + personas + fecha.</div>
+        </div>
+      </div>
+
+      <div class="alerta a-warning">
+        <strong>Antes de dar precio, necesitas saber:</strong> ¿Alojamiento, DayPass o Evento? · ¿Cuántas personas? · ¿Qué fecha? Sin los 3 datos, no cotices — los precios varían según estos factores. Consulta la <a href="https://docs.google.com/spreadsheets/d/1Y3i_aPmN2scsV3TTlxn3mOG9os8bfg5L2wKVxjbDj6s/edit?usp=sharing" target="_blank" style="color:var(--naranja);font-weight:500;">Tabla de tarifas</a>.
+      </div>
+
+      <div class="flujo">
+        <div class="paso">
+          <div class="paso-num" style="background:#e8f0e8;color:var(--verde-m)">1</div>
+          <div class="paso-body">
+            <div class="paso-titulo">Si ya tienen los 3 datos → consulta la tabla de tarifas</div>
+            <div class="paso-desc">Abre la <strong>Tabla de tarifas 2026</strong> (botón arriba). Busca la modalidad, número de personas y si es temporada alta o baja. <strong>Nunca des un precio de memoria.</strong></div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num" style="background:#e8f0e8;color:var(--verde-m)">2</div>
+          <div class="paso-body">
+            <div class="paso-titulo">Verificar disponibilidad en el calendario</div>
+            <div class="paso-desc">Antes de cotizar, abre <strong>tinyurl.com/DispTabachin</strong> para confirmar que la fecha está libre. Si está ocupada, ofrece fechas cercanas.</div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num" style="background:#e8f0e8;color:var(--verde-m)">3</div>
+          <div class="paso-body">
+            <div class="paso-titulo">Enviar la cotización con el formato correcto</div>
+            <div class="paso-desc">Usa el mensaje de abajo. Siempre incluye: precio, qué incluye, forma de apartar y contacto de Wendy.</div>
+          </div>
+        </div>
+      </div>
+
+      <span class="sec-label">Cotización · Alojamiento</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Con gusto! Aquí va la cotización para [fecha]:
+
+🏡 ALOJAMIENTO
+· [X] personas: $[PRECIO] MXN / noche
+· Horario: 3:00 pm llegada → 11:00 am salida del día siguiente
+· Incluye: Alberca climatizada y techada · Jacuzzi · Habitaciones · Fogatero · Cocina exterior · Billar · Futbolito · Jardines privados
+
+💰 Para apartar la fecha:
+· Anticipo del 60%: $[ANTICIPO] MXN
+· Resto (40%): se liquida 10 días antes de la llegada
+
+📋 Depósito de seguridad: $4,500 MXN en efectivo (se devuelve en 72hrs)
+
+⚠️ Tenemos una sola reserva por día — el espacio es 100% tuyo.
+
+¿Te gustaría apartar la fecha? Te comunico con Wendy para continuar el proceso 😊
+
+📲 wa.me/4641704249
+🌐 quintatabachin.com.mx</div>
+
+      <span class="sec-label">Cotización · DayPass</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Claro! Aquí va la info del DayPass para [fecha]:
+
+☀️ DAYPASS EXCLUSIVO
+· [X] personas: $[PRECIO] MXN
+· Horario: 1:00 pm a 8:00 pm
+· Incluye: Alberca climatizada · Jacuzzi · Fogatero · Cocina exterior · Asador · Billar · Futbolito · Jardines
+
+💰 Para apartar: anticipo del 60%
+📋 Depósito de seguridad: $4,500 MXN en efectivo
+
+⚠️ Una sola reserva al día — todo el espacio es solo para ustedes.
+
+¿Procedemos? Te paso con Wendy para los siguientes pasos 😊
+
+📲 wa.me/4641704249
+🌐 quintatabachin.com.mx</div>
+
+      <div class="alerta a-warning">
+        <strong>Forma de pago:</strong> Si el cliente pregunta por precio en transferencia, el total incluye IVA (16%). No digas que "aumenta" — di que ese es el total para pago por transferencia. Si paga en efectivo o retiro sin tarjeta, no hay IVA. Consultar tabla de tarifas para montos exactos.
+      </div>
+    </div>
+
+    <!-- ═══════════ QUIERE RESERVAR ═══════════ -->
+    <div class="bloque" id="bloque-reserva">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:var(--verde-m)"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:var(--verde-m)">Tipo de mensaje</div>
+          <div class="bh-titulo">Quiere reservar</div>
+          <div class="bh-desc">El cliente ya decidió y quiere apartar la fecha. Tu trabajo es confirmar disponibilidad y pasarlo a Wendy.</div>
+        </div>
+      </div>
+
+      <div class="flujo">
+        <div class="paso">
+          <div class="paso-num" style="background:var(--verde-m);color:var(--crema)">1</div>
+          <div class="paso-body">
+            <div class="paso-titulo">Verificar disponibilidad en el calendario</div>
+            <div class="paso-desc">Antes de responder, abre <strong>tinyurl.com/DispTabachin</strong>. Si la fecha está libre, continúa. Si está ocupada, ofrece las fechas más cercanas disponibles.</div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num" style="background:var(--verde-m);color:var(--crema)">2</div>
+          <div class="paso-body">
+            <div class="paso-titulo">Confirmar disponibilidad al cliente</div>
+            <div class="paso-desc">Usa el mensaje de abajo. La fecha está disponible solo hasta que se paga el anticipo — no está apartada con solo manifestar interés.</div>
+          </div>
+        </div>
+        <div class="paso">
+          <div class="paso-num" style="background:var(--verde-m);color:var(--crema)">3</div>
+          <div class="paso-body">
+            <div class="paso-titulo">Avisar a Wendy por WhatsApp</div>
+            <div class="paso-desc">Escríbele a Wendy: <em>"Hola Wendy, [Nombre] en [FB/IG] quiere reservar [fecha] para [X personas] modalidad [alojamiento/DayPass/evento]. Le dije que te escribiera."</em></div>
+          </div>
+        </div>
+      </div>
+
+      <span class="sec-label">Respuesta · fecha disponible</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Buenas noticias! 🌿 La fecha [día, fecha] está disponible.
+
+Para formalizar la reserva, el siguiente paso es contactar directamente a Wendy, quien se encarga del proceso de confirmación y contrato:
+
+📲 wa.me/4641704249
+
+Ella te guiará con el anticipo, contrato y todos los detalles de tu llegada.
+
+¡Esperamos verlos pronto en Tabachín! 😊
+
+🌐 quintatabachin.com.mx</div>
+
+      <span class="sec-label">Respuesta · fecha no disponible</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Hola! Lamentablemente [fecha] ya está reservada por otro grupo 😔
+
+Lo bueno es que tenemos disponibilidad en estas fechas cercanas:
+· [Fecha alternativa 1]
+· [Fecha alternativa 2]
+· [Fecha alternativa 3]
+
+¿Alguna de estas te funciona? 😊
+
+📲 wa.me/4641704249
+🌐 quintatabachin.com.mx</div>
+
+      <div class="alerta a-info">
+        <strong>Importante:</strong> La fecha <strong>no está apartada</strong> hasta que se paga el anticipo (60%). Si el cliente pregunta si "ya está apartada" solo por escribir, responde: "La fecha se confirma formalmente con el anticipo. Por el momento está disponible para ti."
+      </div>
+    </div>
+
+    <!-- ═══════════ EVENTO ═══════════ -->
+    <div class="bloque" id="bloque-evento">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:var(--naranja)"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:var(--naranja)">Tipo de mensaje</div>
+          <div class="bh-titulo">Pregunta por evento o celebración</div>
+          <div class="bh-desc">Cumpleaños, XV años, boda, reunión corporativa, graduación. Necesitas saber cuántas personas para clasificar la reserva.</div>
+        </div>
+      </div>
+
+      <div class="alerta a-warning">
+        <strong>Regla clave:</strong> Hasta 30 personas = se cobra como alojamiento (no hay renta de salón). A partir de 31 personas = es evento formal con tarifa de evento + alojamiento con 30% descuento. <strong>Nunca cotices evento sin saber el número de personas.</strong>
+      </div>
+
+      <span class="sec-label">Preguntas que debes hacer primero</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Hola [nombre]! Nos da mucho gusto que estés pensando en Tabachín para tu celebración 🎉
+
+Para prepararte una propuesta completa, necesito algunos datos:
+
+1. ¿Cuántas personas serían en total (incluyendo niños)?
+2. ¿Para qué fecha tienes pensado el evento?
+3. ¿Es solo el evento (tarde-noche) o también necesitan quedarse a dormir?
+4. ¿Qué tipo de celebración es? (cumpleaños, reunión de familia, corporativo…)
+
+Con eso te armo la cotización correcta 😊
+
+🌐 quintatabachin.com.mx</div>
+
+      <div class="divider"></div>
+      <span class="sec-label">Respuesta · Evento de 31+ personas (evento formal)</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Perfecto! Para [X] personas en [fecha], aquí va la propuesta:
+
+🎊 EVENTO + ALOJAMIENTO
+· Renta de salón + áreas: $[TARIFA EVENTO según tabla] MXN
+· Alojamiento esa noche: precio regular con 30% descuento
+· Horario del evento: 12:00 pm a 12:00 am
+· Extensión de horario: $1,500 MXN/hora (máx. hasta 2:00 am, previa autorización)
+
+📋 Incluye: Salón techado · Jardines · Alberca · Cocina exterior · Áreas comunes
+
+💰 Para apartar: anticipo del 60%
+📋 Depósito de seguridad: $4,500 MXN en efectivo
+
+⚠️ Una sola reserva por día — el espacio es exclusivo para tu evento.
+
+¿Te gustaría continuar? Te paso con Wendy para los detalles 😊
+
+📲 wa.me/4641704249
+🌐 quintatabachin.com.mx</div>
+
+      <div class="alerta a-info">
+        <strong>Noches adicionales:</strong> Si el cliente quiere quedarse antes o después del evento, esas noches se cobran a tarifa regular (sin descuento). Dejar claro desde el inicio.
+      </div>
+    </div>
+
+    <!-- ═══════════ CANCELACIÓN ═══════════ -->
+    <div class="bloque" id="bloque-cancel">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:var(--rojo)"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:var(--rojo)">Tipo de mensaje</div>
+          <div class="bh-titulo">Quiere cancelar</div>
+          <div class="bh-desc">No respondas con política de golpe. Primero sé empática, luego explica. Siempre escala a Wendy.</div>
+        </div>
+      </div>
+
+      <div class="alerta a-danger">
+        <strong>Nunca confirmes un reembolso tú sola.</strong> Solo Wendy y Silvia pueden autorizar reembolsos. Tu trabajo es recibir la solicitud, dar la información de la política y escalar.
+      </div>
+
+      <span class="sec-label">Paso 1 · Respuesta inicial empática</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+Hola [nombre], entendemos que a veces los planes cambian 🙏
+
+Para poder ayudarte con tu solicitud de cancelación, voy a comunicarte con Wendy, quien se encarga directamente de este proceso:
+
+📲 wa.me/4641704249
+
+Ella revisará los detalles de tu reserva y te informará sobre las condiciones aplicables.
+
+¿Hay algo más en lo que pueda ayudarte mientras tanto?</div>
+
+      <div class="divider"></div>
+      <span class="sec-label">Política de cancelación · referencia rápida</span>
+      <div class="tc-grid">
+        <div class="tc-card" style="border-top-color:#3a8a3a">
+          <h4 style="color:#3a8a3a">Reembolso 100%</h4>
+          <ul>
+            <li>Cancelación dentro de las primeras <strong>24 horas</strong> de haber reservado</li>
+            <li>Solo aplica si la fecha del evento tiene <strong>más de 20 días</strong></li>
+            <li>IVA no se reembolsa</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:#c07820">
+          <h4 style="color:#c07820">Reembolso 50%</h4>
+          <ul>
+            <li>Cancelación con <strong>20 o más días</strong> de anticipación</li>
+            <li>IVA no se reembolsa</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:var(--rojo)">
+          <h4 style="color:var(--rojo)">Sin reembolso</h4>
+          <ul>
+            <li>Cancelación con <strong>menos de 20 días</strong> antes de la fecha</li>
+            <li>Si no se liquidó el 40% restante <strong>10 días antes</strong>: cancelación automática sin reembolso</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:var(--rojo)">
+          <h4 style="color:var(--rojo)">Temporada alta especial</h4>
+          <ul>
+            <li>El anticipo del <strong>60% no es reembolsable</strong> en ningún caso</li>
+            <li>Aplica para SS, Verano, Navidad/AñoNuevo y puentes largos</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ QUEJA ═══════════ -->
+    <div class="bloque" id="bloque-queja">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:#7a2a2a"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:#7a2a2a">Tipo de mensaje</div>
+          <div class="bh-titulo">Queja o situación difícil</div>
+          <div class="bh-desc">Calma, empatía y escalar. Nunca discutas, nunca prometas, nunca improvises.</div>
+        </div>
+      </div>
+
+      <div class="alerta a-danger">
+        <strong>Reglas de oro para quejas:</strong> No discutas · No prometas soluciones · No justifiques lo que pasó · Solo escucha, agradece y escala a Silvia o Wendy de inmediato.
+      </div>
+
+      <span class="sec-label">Respuesta universal para quejas</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+Hola [nombre], muchas gracias por escribirnos y por tomarte el tiempo de compartirnos esto.
+
+Lamentamos mucho que tu experiencia no haya sido lo que esperabas. Lo que me comentas es importante para nosotros.
+
+Voy a compartirlo de inmediato con la persona encargada para que te contacte personalmente y encontremos la mejor solución 🙏
+
+📲 wa.me/4641704249
+
+Gracias por tu comprensión.</div>
+
+      <div class="alerta a-warning">
+        <strong>Después de enviar el mensaje:</strong> Escríbele a Silvia de inmediato con el screenshot de la queja. Ella decidirá cómo responder. No vuelvas a escribirle al cliente hasta tener instrucciones.
+      </div>
+    </div>
+
+    <!-- ═══════════ FOTO / VIDEO ═══════════ -->
+    <div class="bloque" id="bloque-foto">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:#5a3a7a"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:#5a3a7a">Tipo de mensaje</div>
+          <div class="bh-titulo">Sesión de fotos o video</div>
+          <div class="bh-desc">Hay dos modalidades distintas. Necesitas saber si es solo fotos o también video antes de cotizar.</div>
+        </div>
+      </div>
+
+      <div class="tc-grid">
+        <div class="tc-card" style="border-top-color:#5a3a7a">
+          <h4 style="color:#5a3a7a">A · Sesión fotográfica básica</h4>
+          <ul>
+            <li>Solo fotografía, <strong>sin video</strong></li>
+            <li>Lunes a jueves · máx 5 horas</li>
+            <li>Máx <strong>10 personas</strong></li>
+            <li>Tarifa: <strong>$2,500 MXN</strong></li>
+            <li>Sin depósito de seguridad</li>
+            <li>Incluye dron · No acceso a habitaciones</li>
+            <li>Alberca solo para tomas (no recreativa)</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:#3a2a6a">
+          <h4 style="color:#3a2a6a">B · DayPass audiovisual (video/comercial)</h4>
+          <ul>
+            <li>Video musical, reels profesionales, producción comercial</li>
+            <li>Horario: 1pm a 8pm</li>
+            <li>Máx <strong>15 personas</strong></li>
+            <li>Tarifa: <strong>$5,400 MXN</strong></li>
+            <li>Depósito: $4,500 MXN</li>
+            <li>Hora extra: $1,500 (penalización: $2,500)</li>
+          </ul>
+        </div>
+      </div>
+
+      <span class="sec-label">Respuesta inicial · sesión de fotos/video</span>
+      <div class="msg-box">
+        <button class="btn-copy" onclick="copiar(this)">Copiar</button>
+¡Hola! Sí contamos con opciones para sesiones 📸
+
+Para orientarte mejor, ¿me dices qué tipo de producción es?
+
+· Solo fotografías profesionales (sin video)
+· Grabación de video, reels o contenido audiovisual
+
+Cada modalidad tiene condiciones y tarifas diferentes. Con eso te doy la información exacta 😊
+
+🌐 quintatabachin.com.mx</div>
+
+      <div class="alerta a-warning">
+        <strong>Nota importante:</strong> Cualquier grabación sin haber contratado la modalidad correcta puede resultar en cancelación sin reembolso. Si hay duda sobre qué modalidad aplica, escala a Silvia antes de confirmar.
+      </div>
+    </div>
+
+    <!-- ═══════════ T&C RESUMEN ═══════════ -->
+    <div class="bloque" id="bloque-tc">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:var(--dorado)"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:var(--dorado)">Referencia</div>
+          <div class="bh-titulo">Resumen de Términos y Condiciones</div>
+          <div class="bh-desc">Los puntos más importantes que debes conocer. Para detalles completos, consulta el documento oficial.</div>
+        </div>
+      </div>
+
+      <div class="tc-grid">
+        <div class="tc-card" style="border-top-color:var(--verde-m)">
+          <h4 style="color:var(--verde-m)">Anticipos y pagos</h4>
+          <ul>
+            <li><strong>60%</strong> para apartar la fecha</li>
+            <li><strong>40%</strong> restante: 10 días antes de la llegada</li>
+            <li>Si no se paga el 40% a tiempo: cancelación automática sin reembolso</li>
+            <li>Formas de pago: efectivo, retiro sin tarjeta, transferencia bancaria</li>
+            <li>Transferencia incluye IVA 16% (no reembolsable)</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:var(--dorado)">
+          <h4 style="color:var(--dorado)">Depósito de seguridad</h4>
+          <ul>
+            <li><strong>$4,500 MXN en efectivo</strong> — obligatorio al llegar</li>
+            <li>Sin depósito = <strong>no se permite el acceso</strong>, aunque esté 100% pagado</li>
+            <li>Se devuelve en máx 72hrs después de la salida</li>
+            <li>Previa revisión del inmueble</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:#3a8a3a">
+          <h4 style="color:#3a8a3a">Eventos: ¿cuándo es evento?</h4>
+          <ul>
+            <li><strong>Hasta 30 personas</strong>: se cobra como alojamiento (sin renta de salón)</li>
+            <li><strong>31 o más personas</strong>: es evento formal = tarifa evento + alojamiento con 30% descuento solo esa noche</li>
+            <li>Noches adicionales al evento: tarifa regular sin descuento</li>
+            <li>Horario evento: 12pm a 12am</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:#3a6aa0">
+          <h4 style="color:#3a6aa0">Anticipación mínima</h4>
+          <ul>
+            <li>En general: reserva confirmada antes de las <strong>9am del día de entrada</strong></li>
+            <li>Domingos: <strong>mínimo 24 horas</strong> de anticipación</li>
+            <li>No se aceptan reservas de último momento en domingo</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:var(--rojo)">
+          <h4 style="color:var(--rojo)">Cancelaciones</h4>
+          <ul>
+            <li><strong>Primeras 24hrs</strong> post-reserva (con +20 días al evento): reembolso 100%</li>
+            <li><strong>20+ días antes</strong>: reembolso 50%</li>
+            <li><strong>Menos de 20 días</strong>: sin reembolso</li>
+            <li><strong>Temporada alta</strong>: anticipo 60% nunca reembolsable</li>
+            <li>IVA nunca reembolsable</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:var(--naranja)">
+          <h4 style="color:var(--naranja)">Prohibiciones absolutas</h4>
+          <ul>
+            <li>Confeti</li>
+            <li>Pirotecnia (fuegos artificiales)</li>
+            <li>Conexiones de 220V</li>
+            <li>Personas no autorizadas: penalización $1,500</li>
+            <li>Alimentos/bebidas en alberca: penalización $1,500</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ TEMPORADAS ═══════════ -->
+    <div class="bloque" id="bloque-temp">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:#c07820"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:#c07820">Referencia</div>
+          <div class="bh-titulo">Temporadas 2026</div>
+          <div class="bh-desc">En temporada alta aplican tarifas especiales. El anticipo del 60% nunca es reembolsable en temporada alta.</div>
+        </div>
+      </div>
+
+      <div class="temp-grid">
+        <div class="temp-card temp-alta">
+          <h4>🔥 Temporada Alta</h4>
+          <div class="temp-item"><strong>Semana Santa:</strong> 29 marzo – 5 abril 2026</div>
+          <div class="temp-item"><strong>Verano:</strong> Todo julio + primera quincena de agosto</div>
+          <div class="temp-item"><strong>Navidad / Año Nuevo:</strong> 20 diciembre – 6 enero</div>
+          <div class="temp-item"><strong>Puente feb:</strong> Lunes 2 de febrero</div>
+          <div class="temp-item"><strong>Puente mar:</strong> Lunes 16 de marzo</div>
+          <div class="temp-item"><strong>Puente may:</strong> Viernes 1 de mayo</div>
+          <div class="temp-item"><strong>Puente sep:</strong> Miércoles 16 de septiembre</div>
+          <div class="temp-item"><strong>Puente nov:</strong> Lunes 16 de noviembre</div>
+        </div>
+        <div class="temp-card temp-baja">
+          <h4>🌿 Temporada Baja</h4>
+          <div class="temp-item">Enero (posterior al 6)</div>
+          <div class="temp-item">Febrero</div>
+          <div class="temp-item">Septiembre</div>
+          <div class="temp-item">Noviembre (excepto puentes)</div>
+          <div class="temp-item" style="color:var(--gris);font-style:italic">El resto del año = temporada regular</div>
+        </div>
+      </div>
+
+      <div class="alerta a-warning">
+        <strong>Navidad y Año Nuevo especial:</strong> Para el 24–25 dic y 31 dic–1 ene se requieren mínimo <strong>2 noches</strong> de alojamiento. El resto de la temporada navideña puede ser 1 noche.
+      </div>
+      <div class="alerta a-info">
+        <strong>Cambio de temporada:</strong> Si alguien reservó en temporada baja y cambia a temporada alta → se ajusta el precio. Si reservó en alta y cambia a baja → no hay reembolso ni ajuste.
+      </div>
+    </div>
+
+    <!-- ═══════════ CUÁNDO ESCALAR ═══════════ -->
+    <div class="bloque" id="bloque-escalar">
+      <div class="bloque-header">
+        <div class="bh-color" style="background:var(--rojo)"></div>
+        <div class="bh-info">
+          <div class="bh-tipo" style="color:var(--rojo)">Referencia</div>
+          <div class="bh-titulo">¿Cuándo escalar y a quién?</div>
+          <div class="bh-desc">Conocer tu límite es tan importante como saber responder. Escalar a tiempo evita problemas mayores.</div>
+        </div>
+      </div>
+
+      <div class="esc-grid">
+        <div class="esc-card">
+          <div class="esc-rol">Reservas y operación</div>
+          <div class="esc-nombre">Wendy</div>
+          <div class="esc-contacto"><a href="https://wa.me/4641704249" target="_blank" style="color:var(--dorado);text-decoration:none;">wa.me/4641704249</a></div>
+          <div class="esc-cuando">Cuando el cliente quiere reservar · confirmar disponibilidad oficial · cancelar · tiene pregunta de pago · necesita contrato</div>
+        </div>
+        <div class="esc-card">
+          <div class="esc-rol">Marketing y contenido</div>
+          <div class="esc-nombre">Silvia</div>
+          <div class="esc-contacto">WhatsApp directo</div>
+          <div class="esc-cuando">Queja grave · situación inusual · duda sobre qué responder · solicitud de excepción · grabación/video · algo que no está en la guía</div>
+        </div>
+        <div class="esc-card">
+          <div class="esc-rol">Cobertura dominical</div>
+          <div class="esc-nombre">Chuy</div>
+          <div class="esc-contacto">WhatsApp directo</div>
+          <div class="esc-cuando">Domingos cuando Lilis no cubre · revisión de bandeja de entrada</div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+      <span class="sec-label">Situaciones que SIEMPRE debes escalar</span>
+      <div class="tc-grid">
+        <div class="tc-card" style="border-top-color:var(--rojo)">
+          <h4 style="color:var(--rojo)">Escalar a Wendy</h4>
+          <ul>
+            <li>Cliente quiere confirmar reserva y pagar anticipo</li>
+            <li>Cliente pide cancelar su reserva</li>
+            <li>Pregunta sobre pago, transferencia o estado de su reserva</li>
+            <li>Cliente ya reservó y tiene pregunta operativa (check-in, llegada, etc.)</li>
+            <li>Solicita factura</li>
+          </ul>
+        </div>
+        <div class="tc-card" style="border-top-color:var(--rojo)">
+          <h4 style="color:var(--rojo)">Escalar a Silvia</h4>
+          <ul>
+            <li>Queja o comentario negativo en redes</li>
+            <li>Solicitud fuera de lo normal (descuento, excepción, condición especial)</li>
+            <li>Duda sobre qué responder y no está en esta guía</li>
+            <li>Grabación de video profesional o sesión fotográfica</li>
+            <li>Cualquier situación que te genere duda</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="alerta a-success">
+        <strong>Recuerda:</strong> Escalar no es un error — es hacer bien tu trabajo. Más vale preguntar a tiempo que dar información incorrecta al cliente.
+      </div>
+    </div>
+
+  </div><!-- /content -->
+</div><!-- /layout -->
+
+<div class="footer">
+  <div class="footer-m">Quinta Tabachín · Guía Community Manager</div>
+  <div class="footer-v">Lilis · Versión Abril 2026 · Uso interno</div>
+</div>
+
+<script>
+function mostrar(id, el) {
+  document.querySelectorAll('.bloque').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('active'));
+  document.getElementById('bloque-' + id).classList.add('active');
+  el.classList.add('active');
+  document.querySelector('.content').scrollTop = 0;
+}
+
+function copiar(btn) {
+  const box = btn.closest('.msg-box');
+  const texto = box.childNodes;
+  let txt = '';
+  texto.forEach(n => {
+    if (n.nodeType === 3) txt += n.textContent;
+    else if (n.tagName !== 'BUTTON' && n.className !== 'msg-label') txt += n.textContent;
+  });
+  navigator.clipboard.writeText(txt.trim()).then(() => {
+    btn.textContent = '✅ Copiado';
+    btn.classList.add('ok');
+    setTimeout(() => { btn.textContent = 'Copiar'; btn.classList.remove('ok'); }, 2000);
+  });
+}
+</script>
+</body>
+</html>
